@@ -1,8 +1,43 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">Bienvenido</h1>
+    <br />
+    @*<h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <ul class="navbar-nav">*@
+
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="New(@User.Identity?.Name)">Nueva Partida</a>
+        </li>
+            <li class="nav-item">
+                        <a  class="nav-link text-dark" asp-area="Home" asp-page="/Account/Manage/Index" title="Manage">Cargar Partida</a>
+            </li>
+        @*<li class="nav-item">
+            <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </li>*@
+        }
+        else
+        {
+        <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="Home" asp-action="New">Nueva partida como invitado</a>
+        </li>
+        @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>*@
+        }
+    </ul>
+
 </div>
+

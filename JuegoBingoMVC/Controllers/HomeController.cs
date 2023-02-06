@@ -18,10 +18,23 @@ namespace JuegoBingoMVC.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        /*public IActionResult Privacy()
         {
             return View();
+        }*/
+
+        public IActionResult New()
+        {
+            Partida miPartida = new(4);
+
+            return View(miPartida);
         }
+
+        /*public IActionResult New(string user)
+        {
+
+            return View();
+        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
