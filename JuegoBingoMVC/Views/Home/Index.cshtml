@@ -17,7 +17,7 @@
         @if (SignInManager.IsSignedIn(User))
         {
         <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Home" asp-action="New(@User.Identity?.Name)">Nueva Partida</a>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="NewGame(@User.Identity?.Name)">Nueva Partida</a>
         </li>
             <li class="nav-item">
                         <a  class="nav-link text-dark" asp-area="Home" asp-page="/Account/Manage/Index" title="Manage">Cargar Partida</a>
@@ -31,7 +31,7 @@
         else
         {
         <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Home" asp-action="New">Nueva partida como invitado</a>
+                        <a class="nav-link text-dark" asp-controller="Home" asp-action="NewGame">Nueva partida como invitado</a>
         </li>
         @*<li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>

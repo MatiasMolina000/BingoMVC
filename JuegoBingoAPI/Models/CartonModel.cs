@@ -1,36 +1,35 @@
-﻿namespace JuegoBingoMVC.Models
+﻿namespace JuegoBingoAPI.Models
 {
-    public class Carton
+    public class CartonModel
     {
         // 1ra Declaración de variables (Necesarias para delimitar el armado del cartón)
         public readonly int _filas = 3;
         public readonly int _columnas = 9;
         private readonly int _valorMin = 1;
         private readonly int _valorMax = 10;
-
         // 2da Declaración de variables (Necesarias para ordenar y limitar la cantidad de números,
         // maximo 15 números, 3 columnas con 1 espacio vacío y 6 con 2 espacios vacíos)
         private int _celdaAct = 0;
         private int _celdaAnt = 0;
         private int _nVuelta;
-
         // 3ra Declaracion y asignación  de variables (Necesarias para definir posiciones de números respetando 5 valores por fila)
-        private int _celdaAnt1 = -1;
-        private int _celdaAct1 = 0;
+        //private int _celdaAnt1 = -1;
+        //private int _celdaAct1 = 0;
         private int _fila0 = 0;
         private int _fila1 = 0;
-
         // 4ta Declaración y asignación de variables (Necesaria para armado de carton final con números aleatorios diferentes)
         private int _numeroAct = 0;
         private int _numeroAnt = 0;
 
-        public int Id { get; set; }
+        public int ID { get; set; }
+        public int NumeroCarton { get; set; }
+        public int JuegoHistorialId { get; set; }
+        public string Numeros { get; set; }
 
-        public int[,] Numeros { get; set; }
-
-        public Carton()
+        public CartonModel()
         {
             int[,] carton = new int[_filas, _columnas];
+            string numeros = "";
 
             // 1 - Genero matriz con rangos minimos y máximos de números que puede tener el cartón por columna
             int[,] rangos = new int[_filas, _columnas];
@@ -38,7 +37,7 @@
             {
                 if (c == _columnas - 1)
                 {
-                    _valorMax = _valorMax + 1;
+                    _valorMax += 1;
                     rangos[0, c] = _valorMin;
                     rangos[1, c] = _valorMax;
                 }
@@ -48,7 +47,7 @@
                     rangos[1, c] = _valorMax;
                 }
                 _valorMin = _valorMax;
-                _valorMax = _valorMin + 10;
+                _valorMax += 10;
             }
 
             // 2 - Defino tres distintas columnas con 2 campos en vacío
@@ -57,13 +56,13 @@
             {
                 do
                 {
-                    Random columnasEnBlancoAleatorias = new Random();
+                    Random columnasEnBlancoAleatorias = new();
                     _celdaAct = columnasEnBlancoAleatorias.Next(0, _columnas - 1);
 
                     // Condicional If para minimizar columnas de 2 campos vacíos seguidas
                     if (_celdaAct == _celdaAnt + 1)
                     {
-                        Random nuevaVuelta = new Random();
+                        Random nuevaVuelta = new();
                         _nVuelta = nuevaVuelta.Next(0, 1);
                         if (_nVuelta == 1)
                         {
@@ -102,7 +101,7 @@
                             {
                                 carton[f, c0] = 1;
                             }
-                            _fila0 = _fila0 + carton[f, c0];
+                            _fila0 += carton[f, c0];
 
                         }
                     } while (_fila0 != 5);
@@ -155,7 +154,7 @@
                                     carton[f + 1, c1] = 1;
                                 }
                             }
-                            _fila1 = _fila1 + carton[f, c1];
+                            _fila1 += carton[f, c1];
                         }
                     } while (_fila1 != 5);
                 }
@@ -207,24 +206,48 @@
                 }
             }
 
-            Numeros = carton;
+            //Numeros = carton;
+
+            for (int c = 0; c < 9; c++)
+            {
+                for (int f = 0; f < 3; f++)
+                {
+                    if (f == 0 && c == 0)
+                    {
+                        if (carton[f, c] != 0) {
+                            numeros = carton[f, c].ToString();
+                        }
+                    }
+                    else 
+                    {
+                        numeros += ",";
+                        if (carton[f, c] > 0) 
+                        {
+                            numeros += carton[f, c].ToString();
+                        }
+                    }
+                    
+                    //numeros = numeros + carton[f, c].ToString() + ";";
+                }
+            }
+            Numeros = numeros;
 
         }
 
-        public List<Carton> ArmarJego(int cantidades)
+        /*public List<CartonModel> ArmarJego(int cantidades)
         {
-            var misCartones = new List<Carton>();
+            var misCartones = new List<CartonModel>();
 
             for (int i = 0; i < cantidades; i++)
             {
-                var carton = new Carton();
-                carton.Id = i;
+                var carton = new CartonModel();
+                carton.NumeroCarton = i;
 
                 misCartones.Add(carton);
             }
 
             return misCartones;
-        }
+        }*/
 
     }
 }

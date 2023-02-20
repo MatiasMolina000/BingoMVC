@@ -1,21 +1,21 @@
 ﻿namespace JuegoBingoMVC.Models
 {
-    public class Partida
+    public class PartidaModel
     {
         public int Id { get; set; }
-        public List<Carton>? Jugadores { get; set; }
-        public Bolillero Bolillero { get; set; }
+        public List<CartonModel>? Jugadores { get; set; }
+        public BolilleroModel Bolillero { get; set; }
 
-        public Partida(int nCartones)
+        public PartidaModel(int nCartones)
         {
             try
             {
                 //Armo los cartones vacíos para el juego
-                Carton cartones = new();
+                CartonModel cartones = new();
                 Jugadores = cartones.ArmarJego(nCartones);
 
                 //Obtengo listado de números
-                Bolillero bilillero = new();
+                BolilleroModel bilillero = new();
                 Bolillero = bilillero;
             }
             catch (Exception)

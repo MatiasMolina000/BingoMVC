@@ -1,6 +1,6 @@
 ﻿namespace JuegoBingoMVC.Models
 {
-    public class Bolilla
+    public class BolillaModel
     {
         private readonly int _valorMinimo = 1;
         private readonly int _valorMaximo = 90;
@@ -17,12 +17,12 @@
         }
         public bool Estado { get; set; }
 
-        public Bolilla() { }
+        public BolillaModel() { }
 
-        public Bolilla BolillaAleatorea()
+        public BolillaModel BolillaAleatorea()
         {
             Random bolillaRndm = new();
-            var bolillaAleatorea = new Bolilla()
+            var bolillaAleatorea = new BolillaModel()
             {
                 NumeroBolilla = bolillaRndm.Next(Minimo, Maximo).ToString(),
                 Estado = true

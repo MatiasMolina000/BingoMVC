@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JuegoBingoMVC", "JuegoBingoMVC\JuegoBingoMVC.csproj", "{C645567B-BA35-4FA2-B55B-46AC6BAE737D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JuegoBingoAPI", "JuegoBingoAPI\JuegoBingoAPI.csproj", "{3E776081-D873-4A44-8A0E-983D2BBDD35A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C645567B-BA35-4FA2-B55B-46AC6BAE737D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C645567B-BA35-4FA2-B55B-46AC6BAE737D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C645567B-BA35-4FA2-B55B-46AC6BAE737D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C645567B-BA35-4FA2-B55B-46AC6BAE737D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E776081-D873-4A44-8A0E-983D2BBDD35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E776081-D873-4A44-8A0E-983D2BBDD35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E776081-D873-4A44-8A0E-983D2BBDD35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E776081-D873-4A44-8A0E-983D2BBDD35A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BC968AC6-46EE-4414-A6C2-8631F4CEF350}
+	EndGlobalSection
+EndGlobal

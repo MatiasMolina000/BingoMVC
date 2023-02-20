@@ -1,13 +1,13 @@
-﻿namespace JuegoBingoMVC.Models
+﻿namespace JuegoBingoAPI.Models
 {
-    public class Bolillero
+    public class BolilleroModel
     {
-        public List<Bolilla>? Bolillas { get; set; }
+        public List<BolillaModel>? Bolillas { get; set; }
 
-        public Bolillero() { }
-        public Bolillero LanzarBolilla(Bolillero bolillasJugadas)
+        public BolilleroModel() { }
+        public BolilleroModel LanzarBolilla(BolilleroModel bolillasJugadas)
         {
-            Bolilla bolilla = new();
+            BolillaModel bolilla = new();
 
             //bool yaJugada = bolillasJugadas.Bolillas.Find(bolilla);
             //for (int i = 0; i < cantidades; i++)

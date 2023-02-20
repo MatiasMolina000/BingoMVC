@@ -23,11 +23,11 @@ namespace JuegoBingoMVC.Controllers
             return View();
         }*/
 
-        public IActionResult New()
+        public IActionResult NewGame()
         {
-            Partida miPartida = new(4);
-
-            return View(miPartida);
+            //Partida miPartida = new(4);
+            //return View(miPartida);
+            return View();
         }
 
         /*public IActionResult New(string user)
