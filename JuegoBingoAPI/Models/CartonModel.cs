@@ -32,7 +32,7 @@
             string numeros = "";
 
             // 1 - Genero matriz con rangos minimos y máximos de números que puede tener el cartón por columna
-            int[,] rangos = new int[_filas, _columnas];
+            int[,] rangos = new int[_filas - 1, _columnas];
             for (var c = 0; c < _columnas; c++)
             {
                 if (c == _columnas - 1)
@@ -100,9 +100,12 @@
                             if (carton[f, c0] > 0)
                             {
                                 carton[f, c0] = 1;
+                                _fila0 += 1;
+                                if (_fila0 == 5)
+                                {
+                                    break;
+                                }
                             }
-                            _fila0 += carton[f, c0];
-
                         }
                     } while (_fila0 != 5);
                 }
@@ -135,12 +138,12 @@
                                 }
                                 else
                                 {
-                                    carton[f, c1] = 0;
                                     carton[f + 1, c1] = 1;
                                 }
                             }
                             else if (numXColumnas[c1] == 1 && carton[f - 1, c1] == 1)
                             {
+                                
                                 Random celdaEnBlancoAleatoria = new();
                                 carton[f, c1] = celdaEnBlancoAleatoria.Next(0, 3);
                                 if (carton[f, c1] > 0)
@@ -150,7 +153,6 @@
                                 }
                                 else
                                 {
-                                    carton[f, c1] = 0;
                                     carton[f + 1, c1] = 1;
                                 }
                             }
