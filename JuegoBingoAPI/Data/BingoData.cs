@@ -2,6 +2,7 @@
 using Dapper;
 using System.Data.SqlClient;
 using JuegoBingoAPI.Models;
+using System.Collections.Generic;
 
 namespace JuegoBingoAPI.Data
 {
@@ -65,6 +66,29 @@ namespace JuegoBingoAPI.Data
             };
         }
 
+        public List<BolilleroModel> GetBolillasCantadas(string partidaId) {
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"SELECT * FROM HistorialBolillero WITh(NOLOCK) WHERE JuegoHistorialId = {partidaId} ORDER BY Alta";
+
+            var bolillero = cnn.Query<BolilleroModel>(query).ToList();
+
+            return bolillero;
+        }
+
+        public BolilleroModel TakeOutBolilla(BolilleroModel bolilla)
+        {
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"INSERT INTO HistorialBolillero (Numeros, Alta, JuegoHistorialId) VALUES (@Numeros, @Alta, @JuegoHistorialId)";
+
+            var row = cnn.Execute(query, bolilla).ToString();
+
+            return bolilla;
+        }
+
         public ResponseModel LoadGame()
         {
             using (var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL()))
@@ -97,5 +121,7 @@ namespace JuegoBingoAPI.Data
                 return response;
             };
         }
+
+
     }
 }
