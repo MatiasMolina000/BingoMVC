@@ -8,13 +8,13 @@
 <div class="container-fluid">
     <div class="row" id="cartones"></div>   
     <div class="row">
-        <div class="col-xl-6 col-lg-12">
-            <button class="nav-link text-dark" function="Girar()">Lanzar Bolilla</button>
+        <div class="col-xl-6 col-lg-12" id="btn-addNumber">
+            <button class="nav-link text-dark" onclick="CallNumber()">Lanzar Bolilla</button>
         </div>
     </div>
     <div class="row">
         <div class="col-xl-6 col-lg-12">
-            Bolilla: <p>@ViewData["BolillaCantada"]</p>
+            Bolilla: <p id="lastNumber"></p>
         </div>
         <div class="col-xl-6 col-lg-12">
             Cartón Ganador:

@@ -1,38 +1,39 @@
-﻿let user = "b2a96165-4b8d-4869-a45e-1cd4c35577ff";
-let cartons = localStorage.getItem("Cartones");
+﻿let userId = "b2a96165-4b8d-4869-a45e-1cd4c35577ff";
+//let partidaId = 35;
 
 function Start() {
+    let cartons = localStorage.getItem("Cartones");
     if (cartons) {
-        ReloadGame()
+        ReloadGame(cartons)
     } else {
-        NewGame(user);
+        NewGame();
     }
 }
 
-// Armo según LocalStorage
-function ReloadGame() {
-
-    let cartones = localStorage.getItem("Cartones");
-    let oData = JSON.parse(cartones);
-
+// Armo partida según LocalStorage
+function ReloadGame(cartons) {
+    let oData = JSON.parse(cartons);
     BuildParty(oData);
+    CheckNumbers();
 }
 
 // Armo llamand a la API
-function NewGame(userId) {
+function NewGame() {
 
     fetch('https://localhost:7062/api/Bingo/NewGame/?usuarioId=' + userId, { method: 'POST' })
         .then((response) => response.json())
         .then((dataJSON) => {
             let oData = JSON.parse(dataJSON.data);
-            localStorage.setItem("Cartones", JSON.stringify(oData));
 
+            localStorage.setItem("Cartones", JSON.stringify(oData));
+            localStorage.setItem("JuegoHistorialId", JSON.stringify(oData[0].JuegoHistorialId));
+            localStorage.setItem("Bolillas", "");
             BuildParty(oData);
         }
     );
 }
 
-// Construyo estructura de cartones
+// Construyo estructura de cartones y muestro última bolilla
 function BuildParty(oData) {
     for (var item in oData) {
 
@@ -81,9 +82,11 @@ function BuildParty(oData) {
     };
 
     PaintCells();  
+
+    ShowNumber(JSON.parse(localStorage.getItem("Bolillas"))[0])
 }
 
-// Asigno clase a celdas vacías
+// Pinto celdas vacías 
 function PaintCells() {
     var elemento = document.querySelectorAll('.oCol');
     for (var i = 0; i < elemento.length; i++) {
@@ -96,6 +99,44 @@ function PaintCells() {
 
 
 
+//Botón para cantar números
+function CallNumber() {
+    let partidaId = localStorage.getItem("JuegoHistorialId");
+    fetch('https://localhost:7062/api/Bingo/NewNumber/?partidaId=' + partidaId, { method: 'POST' })
+        .then((response) => response.json())
+        .then((dataJSON) => {
+            let oData = JSON.parse(dataJSON.data);
+            ShowNumber(oData);
+            AddNumber(oData);
+        }
+    );
+}
+
+// Muestro número en ventana
+function ShowNumber(number) {
+    document.getElementById("lastNumber").innerHTML = number;
+}
+
+//Agrego a lista de números cantados
+function AddNumber(number) {
+    var numbers = JSON.parse(localStorage.getItem("Bolillas"));
+    numbers.unshift(oData);
+    localStorage.setItem("Bolillas", JSON.stringify(number));
+}
+
+
+function CheckNumbers() {
+    var elemento = document.querySelectorAll('.oCol');
+    var numbers = JSON.parse(localStorage.getItem("Bolillas"));
+
+    for (var n = 0; n < numbers.length; n++) {
+        for (var c = 0; c < elemento.length; c++) {
+            if (numbers[n] == elemento[c].innerText) {
+                elemento[c].classList.add("celCheck");
+            };
+        };
+    };
+}
 
 
 Start();
