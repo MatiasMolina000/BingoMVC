@@ -27,7 +27,7 @@ function NewGame() {
 
             localStorage.setItem("Cartones", JSON.stringify(oData));
             localStorage.setItem("JuegoHistorialId", JSON.stringify(oData[0].JuegoHistorialId));
-            localStorage.setItem("Bolillas", "");
+            localStorage.setItem("Bolillas", "0");
             BuildParty(oData);
         }
     );
@@ -83,7 +83,10 @@ function BuildParty(oData) {
 
     PaintCells();  
 
-    ShowNumber(JSON.parse(localStorage.getItem("Bolillas"))[0])
+    if (localStorage.getItem("Bolillas") != "0") {
+        var arrayNumbers = JSON.parse(localStorage.getItem("Bolillas"));
+        ShowNumber(arrayNumbers[0]);
+    }
 }
 
 // Pinto celdas vacías 
@@ -119,9 +122,15 @@ function ShowNumber(number) {
 
 //Agrego a lista de números cantados
 function AddNumber(number) {
-    var numbers = JSON.parse(localStorage.getItem("Bolillas"));
-    numbers.unshift(oData);
-    localStorage.setItem("Bolillas", JSON.stringify(number));
+    if (localStorage.getItem("Bolillas") != "0") {
+        var numbersArray = JSON.parse(localStorage.getItem("Bolillas"));
+        numbersArray.unshift(number);
+        localStorage.setItem("Bolillas", JSON.stringify(numbersArray));
+        CheckNewNumber(number);
+    }
+    else {
+        localStorage.setItem("Bolillas", '[' + number + ']');
+    }
 }
 
 
@@ -138,5 +147,16 @@ function CheckNumbers() {
     };
 }
 
+
+function CheckNewNumber(number) {
+    var elemento = document.querySelectorAll('.oCol');
+    var numbers = JSON.parse(localStorage.getItem("Bolillas"));
+
+    for (var c = 0; c < elemento.length; c++) {
+        if (elemento[c].innerText == number) {
+            elemento[c].classList.add("celCheck");
+        };
+    };
+}
 
 Start();
