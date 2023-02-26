@@ -11,7 +11,6 @@ namespace JuegoBingoAPI.Rule
     {
         private readonly int _numeroCartones = 4;
 
-
         public ResponseModel NewGame(string usuarioId)
         {
             try
@@ -25,52 +24,51 @@ namespace JuegoBingoAPI.Rule
                 };
 
                 //Guardo
-                var data = new BingoData();
-                var dataResult = data.NewGame(miPartida);
+                BingoData data = new();
+                int partidaId = data.NewGame(miPartida);
 
-                //Valido
-                bool isNumeric = Int32.TryParse(dataResult.Data, out int partidaId);
-                if (isNumeric)
+                var misCartones = new List<CartonModel>();
+
+                for (int i = 1; i <= _numeroCartones; i++)
                 {
-                    //Creo
-                    var misCartones = new List<CartonModel>();
-
-                    for (int i = 1; i <= _numeroCartones; i++)
+                    CartonModel carton = new()
                     {
-                        CartonModel carton = new()
-                        {
-                            NumeroCarton = i,
-                            JuegoHistorialId = partidaId
-                        };
-                        misCartones.Add(carton);
+                        NumeroCarton = i,
+                        JuegoHistorialId = partidaId
                     };
+                    // Guardo Carton
+                    int cartonId = data.InsertPlayers(carton);
 
-                    //Guardo
-                    var cartones = NewGamePlayer(misCartones);
+                    // Guardo Números
+                    var nbrs = carton.Numeros.Split(',');
+                    string inserts = "";
 
-                    //Devuelvo
-                    string jsonString = JsonSerializer.Serialize(misCartones);
+                    for (var n = 0; n < nbrs.Length; n++) {
+                        if (nbrs[n] != "") {
+                            if (inserts != "")
+                            {
+                                inserts += $", ({cartonId}, {nbrs[n]}, 0)";
+                            }
+                            else 
+                            {
+                                inserts += $"({cartonId}, {nbrs[n]}, 0)";
+                            }
+                        }
+                    } 
+                    data.InsertNumbersPlayers(inserts);
 
-                    return new ResponseModel()
-                    {
-                        Status = true,
-                        Message = "Se han generado los cartones exitosamente!",
-                        Data = jsonString
-                    };
-                }
-                else 
+                    var josncartron = JsonSerializer.Serialize(carton);
+                    //Agrego al listado de cartones
+                    misCartones.Add(carton);
+                };
+                string jsonString = JsonSerializer.Serialize(misCartones);
+
+                return new ResponseModel()
                 {
-                    return new ResponseModel()
-                    {
-                        Status = false,
-                        Message = "Ha ocurrido un error!",
-                        Data = ""
-                    };
-
-                }
-                
-                /*var data = new BingoData();
-                var partidaId = data.NewGame(miPartida);*/
+                    Status = true,
+                    Message = "Se han generado los cartones exitosamente!",
+                    Data = jsonString
+                };
             }
             catch (Exception ex)
             {
@@ -83,7 +81,91 @@ namespace JuegoBingoAPI.Rule
             }
         }
         
-        private static ResponseModel NewGamePlayer(List<CartonModel> cartones)
+        public ResponseModel NewNumber(string partidaId) {
+
+            try
+            {
+                int numero = 0;
+                BolillaModel bolilla = new();
+
+                //Accedo a DB, veo existentes
+                BingoData data = new();
+                List<BolilleroModel> dataExist = data.GetBolillasCantadas(partidaId);
+
+                if (dataExist.Count == 0)
+                {
+                    // Creo y asigno
+                    var newNumber = bolilla.BolillaAleatorea();
+                    numero = Int32.Parse(newNumber.NumeroBolilla);
+
+                }
+                else 
+                {
+                    // Repito hasta crear un número unico
+                    bool ok = true;
+                    int ifExist = 0;
+                    do
+                    {
+                        var newNumber = bolilla.BolillaAleatorea();
+                        //Valido y asigno
+                        bool isNumeric = Int32.TryParse(newNumber.NumeroBolilla, out int nro);
+                        if (isNumeric)
+                        {
+                            ifExist = dataExist.Where(Inro => Inro.Numeros == nro).Count();
+                            if (ifExist == 0) 
+                            {
+                                numero = nro;
+                                ok = false;
+                            }
+                        }
+                    } while (ok) ;
+                };
+
+                BolilleroModel bolillaAGrabar = new()
+                {
+                    Numeros = numero,
+                    Alta = DateTime.Now,
+                    JuegoHistorialId = Int32.Parse(partidaId)
+                };
+
+                //Grabo registro en la BD
+                data.InsertCallBolilla(bolillaAGrabar);
+
+                ResponseModel response = new()
+                {
+                    Status = true,
+                    Message = $"Ha salido el número: {bolillaAGrabar.Numeros}",
+                    Data = JsonSerializer.Serialize(bolillaAGrabar)
+                };
+
+                if (dataExist.Count >= 14)
+                {
+                    var checkWinner = data.GetWinners(partidaId);
+
+                    if (checkWinner.Count > 0)
+                    {
+                        string inserts = "";
+                        for (int i = 0; i < checkWinner.Count; i++) {
+                            inserts += $", Carton{i + 1} = {checkWinner[i]}"; 
+                        }
+
+                        data.UpdateEndGame(partidaId, inserts);
+                        
+                        response.Message = $"Ganador: carton {checkWinner}";
+                        response.Data = JsonSerializer.Serialize(checkWinner);
+                    }
+                }
+                return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+            
+        }
+        
+        /* private static ResponseModel NewGamePlayer(List<CartonModel> cartones)
         {
             var inserts = "";
             try
@@ -97,7 +179,7 @@ namespace JuegoBingoAPI.Rule
                 //Gueardo
                 var data = new BingoData();
                 var jugadores = data.NewGamePlayers(inserts);
-                
+
                 return new ResponseModel()
                 {
                     Status = true,
@@ -115,78 +197,7 @@ namespace JuegoBingoAPI.Rule
                 };
             }
         }
-
-        public ResponseModel NewNumber(string partidaId) {
-
-            try
-            {
-                int numero = 0;
-                BolillaModel bolilla = new();
-
-                //Accedo a DB, veo existentes
-                BingoData data = new();
-                var dataExist = data.GetBolillasCantadas(partidaId);
-
-                if (dataExist.Count == 0)
-                {
-                    // Creo y asigno
-                    var newNumber = bolilla.BolillaAleatorea();
-                    numero = Int32.Parse(newNumber.NumeroBolilla);
-
-                }
-                else 
-                {
-                    bool ok = true;
-                    int ifExist = 0;
-                    do
-                    {
-                        //Creo
-                        var newNumber = bolilla.BolillaAleatorea();
-                        //Valido y asigno
-                        bool isNumeric = Int32.TryParse(newNumber.NumeroBolilla, out int nro);
-                        if (isNumeric)
-                        {
-                            ifExist = dataExist.Where(Inro => Inro.Numeros == nro).Count();
-                            if (ifExist == 0) 
-                            {
-                                numero = nro;
-                                ok = false;
-                            }
-                        }
-                    } while (ok) ;
-                };
-
-                //Creo registro
-                BolilleroModel bolillaAGrabar = new()
-                {
-                    Numeros = numero,
-                    Alta = DateTime.Now,
-                    JuegoHistorialId = Int32.Parse(partidaId)
-                };
-
-                //Grabo registro en la BD
-                var dataNew = data.TakeOutBolilla(bolillaAGrabar);
-
-                return new ResponseModel()
-                {
-                    Status = true,
-                    Message = $"Ha salido el número:",
-                    Data = dataNew.Numeros.ToString()
-                };
-            }
-            catch (Exception)
-            {
-                return new ResponseModel()
-                {
-                    Status = false,
-                    Message = $"Ha ocurrido un error al intentar conectar con la Base de datos...",
-                    Data = ""
-                };
-            }
-            
-            
-        }
-
+        */
         /*private static ResponseModel NewGamePlayer(int partidaId, PartidaModel partida)
         {
             var data = new BingoData();

@@ -143,7 +143,7 @@
                             }
                             else if (numXColumnas[c1] == 1 && carton[f - 1, c1] == 1)
                             {
-                                
+
                                 Random celdaEnBlancoAleatoria = new();
                                 carton[f, c1] = celdaEnBlancoAleatoria.Next(0, 3);
                                 if (carton[f, c1] > 0)
@@ -216,19 +216,20 @@
                 {
                     if (f == 0 && c == 0)
                     {
-                        if (carton[f, c] != 0) {
+                        if (carton[f, c] != 0)
+                        {
                             numeros = carton[f, c].ToString();
                         }
                     }
-                    else 
+                    else
                     {
                         numeros += ",";
-                        if (carton[f, c] > 0) 
+                        if (carton[f, c] > 0)
                         {
                             numeros += carton[f, c].ToString();
                         }
                     }
-                    
+
                     //numeros = numeros + carton[f, c].ToString() + ";";
                 }
             }
@@ -239,15 +240,12 @@
         /*public List<CartonModel> ArmarJego(int cantidades)
         {
             var misCartones = new List<CartonModel>();
-
             for (int i = 0; i < cantidades; i++)
             {
                 var carton = new CartonModel();
                 carton.NumeroCarton = i;
-
                 misCartones.Add(carton);
             }
-
             return misCartones;
         }*/
 

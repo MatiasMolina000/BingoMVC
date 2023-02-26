@@ -8,62 +8,104 @@ namespace JuegoBingoAPI.Data
 {
     public class BingoData
     {
-        public ResponseModel NewGame(PartidaModel partida)
+        public int NewGame(PartidaModel partida)
         {
-            using (var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL()))
+            string query = $"INSERT INTO HistorialCartones (Fecha, EstadoId, UsuarioId) VALUES (GETDATE(), @EstadoId, @UsuarioId); SELECT SCOPE_IDENTITY()";
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
             {
-                string query = $"INSERT INTO HistorialCartones (Fecha, EstadoId, UsuarioId) VALUES (GETDATE(), {partida.EstadoId}, '{partida.UsuarioId}'); SELECT SCOPE_IDENTITY()";
-
-                ResponseModel response = new();
-                try
-                {
-                    cnn.Open();
-                    var partidaId = cnn.ExecuteScalar<int>(query);
-
-                    response.Status = true;
-                    response.Data = partidaId.ToString();
-                }
-                catch (Exception)
-                {
-                    response.Status = false;
-                    response.Data = "";
-                    throw;
-                }
-                finally
-                {
-                    cnn.Close();
-                }
+                int response = cnn.ExecuteScalar<int>(query, partida, trn);
+                trn.Commit();
                 return response;
-            };
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
         }
 
-        public ResponseModel NewGamePlayers(string insert)
+        public int InsertPlayers(CartonModel carton)
         {
+            string query = $"INSERT INTO Cartones (NumeroCarton, JuegoHistorialId, Numeros) VALUES (@NumeroCarton, @JuegohistorialId, @Numeros); SELECT SCOPE_IDENTITY()";
 
-            using (var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL()))
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
             {
-                string query = $"INSERT INTO Cartones (NumeroCarton, JuegohistorialId, Numeros) VALUES ({insert})";
-
-                ResponseModel response = new();
-                try
-                {
-                    cnn.Open();
-                    var partidaId = cnn.ExecuteScalar<string>(query);
-
-                    response.Status = true;
-                    response.Data = partidaId;
-                }
-                catch (Exception)
-                {
-                    response.Status = false;
-                    throw;
-                }
-                finally
-                {
-                    cnn.Close();
-                }
+                int response = cnn.ExecuteScalar<int>(query, carton, trn);
+                trn.Commit();
                 return response;
-            };
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+        }
+
+        public int InsertNumbersPlayers(string inserts)
+        {
+            string query = $"INSERT INTO NumerosCarton(CartonId, Numero, Estado) VALUES{inserts}";
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
+            {
+                int response = cnn.Execute(query, inserts, trn);
+                trn.Commit();
+                return response;
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
+        }
+
+        public int NewGamePlayers(string insert)
+        {
+            string query = $"INSERT INTO Cartones (NumeroCarton, JuegohistorialId, Numeros) VALUES ({insert})";
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
+            {
+                int response = cnn.ExecuteScalar<int>(query, trn);
+                trn.Commit();
+                return response;
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
         }
 
         public List<BolilleroModel> GetBolillasCantadas(string partidaId) {
@@ -77,16 +119,71 @@ namespace JuegoBingoAPI.Data
             return bolillero;
         }
 
-        public BolilleroModel TakeOutBolilla(BolilleroModel bolilla)
+        public int InsertCallBolilla(BolilleroModel bolilla)
         {
+            string query = $"INSERT INTO HistorialBolillero (Numeros, Alta, JuegoHistorialId) VALUES (@Numeros, @Alta, @JuegoHistorialId);" +
+                           $"UPDATE NumerosCarton SET Estado = 1 WHERE EXISTS(SELECT ID FROM Cartones c WHERE NumerosCarton.CartonId = c.ID " +
+                           $"   AND c.JuegoHistorialId = @JuegoHistorialId AND NumerosCarton.Numero = @Numeros)";
 
             using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
 
-            string query = $"INSERT INTO HistorialBolillero (Numeros, Alta, JuegoHistorialId) VALUES (@Numeros, @Alta, @JuegoHistorialId)";
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
+            {
+                int response = cnn.Execute(query, bolilla, trn);
+                trn.Commit();
+                return response;
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
 
-            var row = cnn.Execute(query, bolilla).ToString();
+        }
 
-            return bolilla;
+        public List<string> GetWinners(string partidaId) {
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"SELECT c.NumeroCarton, COUNT(nc.Numero) FROM NumerosCarton nc WITH(NOLOCK) " +
+                           $"  INNER JOIN Cartones c WITH(NOLOCK) ON nc.CartonId = c.ID " +
+                           $"WHERE c.JuegoHistorialId = {partidaId} AND nc.Estado = 1 GROUP BY c.NumeroCarton HAVING COUNT(nc.Numero) = 15";
+
+            var winners = cnn.Query<string>(query).ToList();
+
+            return winners;
+        }
+
+        public int UpdateEndGame(string partidaId, string inserts)
+        {
+
+            string query = $"UPDATE HistorialCartones SET Fecha = GETDATE(){inserts} WHERE ID = {partidaId}";
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            cnn.Open();
+            var trn = cnn.BeginTransaction();
+            try
+            {
+                int response = cnn.Execute(query, inserts, trn);
+                trn.Commit();
+                return response;
+            }
+            catch (Exception)
+            {
+                trn.Rollback();
+                throw;
+            }
+            finally
+            {
+                cnn.Close();
+            }
         }
 
         public ResponseModel LoadGame()
