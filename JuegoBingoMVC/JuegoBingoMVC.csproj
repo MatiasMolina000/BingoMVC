@@ -8,12 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\sweetalert.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\sweetalert.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\js\sweetalert.min.js" />
   </ItemGroup>
 
   <ItemGroup>
