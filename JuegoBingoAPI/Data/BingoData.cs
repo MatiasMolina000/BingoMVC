@@ -8,6 +8,40 @@ namespace JuegoBingoAPI.Data
 {
     public class BingoData
     {
+        public string GetUserIdByName(string userName) {
+
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"SELECT ID FROM AspNetUsers WITH(NOLOCK) WHERE UserName = '{userName}'";
+
+            var response = cnn.QueryFirstOrDefault<string>(query);
+
+            return response;
+        }
+
+        public string GetPartidaByUserName(string userName)
+        {
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"SELECT TOP 1 hc.ID FROM HistorialCartones hc WITH(NOLOCK) " +
+                           $"   INNER JOIN AspNetUsers anu WITH(NOLOCK) ON hc.UsuarioId = anu.Id AND UsuarioId = '{userName}' " +
+                           $"WHERE EstadoId = 1 ORDER BY Fecha DESC";
+
+            var response = cnn.QueryFirstOrDefault<string>(query);
+
+            return response;
+        }
+
+        public List<CartonModel> GetCartonesByPartidaId(string partidaId) {
+            using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
+
+            string query = $"SELECT * FROM Cartones WITH(NOLOCK) WHERE JuegoHistorialId = '{partidaId}'";
+
+            var response = cnn.Query<CartonModel>(query).ToList();
+
+            return response;
+        }
+
         public int NewGame(PartidaModel partida)
         {
             string query = $"INSERT INTO HistorialCartones (Fecha, EstadoId, UsuarioId) VALUES (GETDATE(), @EstadoId, @UsuarioId); SELECT SCOPE_IDENTITY()";
@@ -112,7 +146,7 @@ namespace JuegoBingoAPI.Data
 
             using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
 
-            string query = $"SELECT * FROM HistorialBolillero WITh(NOLOCK) WHERE JuegoHistorialId = {partidaId} ORDER BY Alta";
+            string query = $"SELECT * FROM HistorialBolillero WITh(NOLOCK) WHERE JuegoHistorialId = {partidaId} ORDER BY Alta DESC";
 
             var bolillero = cnn.Query<BolilleroModel>(query).ToList();
 
@@ -160,10 +194,10 @@ namespace JuegoBingoAPI.Data
             return winners;
         }
 
-        public int UpdateEndGame(string partidaId, string inserts)
+        public int UpdateEndGame(string partidaId, int estadoId, string inserts)
         {
 
-            string query = $"UPDATE HistorialCartones SET Fecha = GETDATE(){inserts} WHERE ID = {partidaId}";
+            string query = $"UPDATE HistorialCartones SET Fecha = GETDATE(), EstadoId = {estadoId}{inserts} WHERE ID = {partidaId}";
 
             using var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL());
 
@@ -185,40 +219,6 @@ namespace JuegoBingoAPI.Data
                 cnn.Close();
             }
         }
-
-        public ResponseModel LoadGame()
-        {
-            using (var cnn = new SqlConnection(new ConnectionDB().ConnectionStringSQL()))
-            {
-                string query = "SELECT hc.Id FROM HistorialCartones hc WITH(NOLOCK) INNER JOIN AspNetUsers u WITH(NOLOCK) ON hc.UsuarioId = u.ID AND hc.EstadoId = 1";
-
-                ResponseModel response = new();
-
-                try
-                {
-                    cnn.Open();
-                    int partidaId = cnn.ExecuteScalar<int>(query);
-
-                    response.Status = true;
-                    response.Data = partidaId.ToString();
-                    
-                    
-                }
-                catch (Exception)
-                {
-                    response.Status = false;
-
-                    throw;
-
-                }
-                finally
-                {
-                    cnn.Close();
-                }
-                return response;
-            };
-        }
-
 
     }
 }

@@ -10,10 +10,10 @@ namespace JuegoBingoAPI.Controllers
     public class BingoController : ControllerBase
     {
         [HttpPost("NewGame")]
-        public ResponseModel NewGame(string usuarioId)
+        public ResponseModel NewGame(string usuarioName)
         {
             var rule = new BingoRule();
-            return rule.NewGame(usuarioId);
+            return rule.NewGame(usuarioName);
         }
 
         [HttpPost("NewNumber")]
@@ -21,6 +21,13 @@ namespace JuegoBingoAPI.Controllers
         {
             var rule = new BingoRule();
             return rule.NewNumber(partidaId);
+        }
+
+        [HttpGet("GetParty")]
+        public ResponseModel GetParty(string usuarioName)
+        {
+            var rule = new BingoRule();
+            return rule.GetParty(usuarioName);
         }
     }
 }

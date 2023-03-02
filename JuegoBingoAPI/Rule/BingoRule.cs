@@ -11,20 +11,22 @@ namespace JuegoBingoAPI.Rule
     {
         private readonly int _numeroCartones = 4;
 
-        public ResponseModel NewGame(string usuarioId)
+        public ResponseModel NewGame(string userName)
         {
             try
             {
+                BingoData data = new();
+                string userId = data.GetUserIdByName(userName);
+
                 //Creo
                 PartidaModel miPartida = new()
                 {
                     Fecha = DateTime.Now,
                     EstadoId = 1,
-                    UsuarioId = usuarioId
+                    UsuarioId = userId
                 };
 
                 //Guardo
-                BingoData data = new();
                 int partidaId = data.NewGame(miPartida);
 
                 var misCartones = new List<CartonModel>();
@@ -149,7 +151,7 @@ namespace JuegoBingoAPI.Rule
                             inserts += $", Carton{i + 1} = {checkWinner[i]}"; 
                         }
 
-                        data.UpdateEndGame(partidaId, inserts);
+                        data.UpdateEndGame(partidaId, 3, inserts);
                         
                         response.Message = $"Ganador: carton {checkWinner}";
                         response.Data = JsonSerializer.Serialize(checkWinner);
@@ -164,129 +166,47 @@ namespace JuegoBingoAPI.Rule
             
             
         }
-        
-        /* private static ResponseModel NewGamePlayer(List<CartonModel> cartones)
-        {
-            var inserts = "";
-            try
-            {
-                //Creo
-                foreach (var item in cartones)
-                {
-                    inserts = $"{item.NumeroCarton}, {item.JuegoHistorialId}, '{item.Numeros}'";
-                    // Valido que se ingrese cada uno de los jugadores.
-                }
-                //Gueardo
-                var data = new BingoData();
-                var jugadores = data.NewGamePlayers(inserts);
 
-                return new ResponseModel()
-                {
-                    Status = true,
-                    Message = "Partida registrada con éxito!",
-                    Data = cartones.ToString()
-                };
-            }
-            catch (Exception)
+        public ResponseModel GetParty(string userName) {
+
+            ResponseModel response = new()
             {
-                return new ResponseModel()
+                Status = true,
+                Message = "",
+                Data = ""
+            };
+
+            BingoData data = new();
+            string userId = data.GetUserIdByName(userName);
+
+            var partidaId = data.GetPartidaByUserName(userId);
+            var cartones = data.GetCartonesByPartidaId(partidaId);
+
+
+            if (partidaId != "" && cartones.Count > 0)
+            {
+                //List<string> numbers = new();
+                var bolillero = data.GetBolillasCantadas(partidaId);
+
+                //foreach (var number in bolillero) { 
+                //    numbers.Add(number.Numeros.ToString());
+                //}
+
+                var miPartida = new
                 {
-                    Status = false,
-                    Message = "Ha ocurrido un error al momento de generar la partida! Intente nuevamente mas tarde...",
-                    Data = ""
+                    PartidaId = Int32.Parse(partidaId),
+                    Cartones = cartones,
+                    Bolillas = bolillero
                 };
+
+                response.Data = JsonSerializer.Serialize(miPartida);
             }
+            else 
+            { 
+                response.Status = false;
+            }
+
+            return response;
         }
-        */
-        /*private static ResponseModel NewGamePlayer(int partidaId, PartidaModel partida)
-        {
-            var data = new BingoData();
-            var inserts = "";
-            var count = 1;
-            var isOk = true;
-            /*try
-            {
-                foreach (var item in partida.)
-                {
-                    inserts = $"{count}, {partidaId}, '{item.Numeros}'";
-                    var jugador = data.NewGamePlayers(inserts);
-                    // Valido que se ingrese cada uno de los jugadores.
-                    count++;
-                    if (!jugador.Status)
-                    {
-                        isOk = false;
-                    }
-                }
-                if (isOk)
-                {
-                    return new ResponseModel()
-                    {
-                        Status = true,
-                        Message = "Partida registrada con éxito!",
-                        Data = partida.ToString()
-                    };
-                }
-                else
-                {
-                    return new ResponseModel()
-                    {
-                        Status = false,
-                        Message = "Ha ocurrido un error al momento de generar la partida! Intente nuevamente mas tarde...",
-                        Data = partida.ToString()
-                    };
-                }
-
-            }
-            catch (Exception ex)
-            {
-                return new ResponseModel()
-                {
-                    Status = false,
-                    Message = ex.Message,
-                    Data = ""
-                };
-            }
-        }
-        */
-        /*public Response NewGame(int usuarioId)
-        {
-            try
-            {
-                var data = new BingoData();
-
-                var existe = data.ExistePartida(usuarioId);
-
-                if (existe > 0)
-                {
-                    return new Response()
-                    {
-                        Status = false,
-                        Message = "Ya existe una Partida sin terminar, desea comomenzar una nueva?",
-                        Data = "0"
-                    };
-                }
-                else
-                {
-                    PartidaDto miPartida = new();
-                    miPartida.ArmarPartida(4);
-                    var response = data.NuevaPartidaJSON(miPartida);
-                    return new Response()
-                    {
-                        Status = true,
-                        Message = "Partida registrada con éxito!",
-                        Data = response
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                return new Response()
-                {
-                    Status = false,
-                    Message = ex.Message,
-                    Data = "0"
-                };
-            }
-        }*/
     }
 }
