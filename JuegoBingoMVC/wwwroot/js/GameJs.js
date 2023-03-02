@@ -1,15 +1,15 @@
-﻿let userId = "b2a96165-4b8d-4869-a45e-1cd4c35577ff";
+﻿let userName = "";
 //let partidaId = 35;
 
 
 /***** INICIO *****/
 function Start() {
-    let cartons = localStorage.getItem("Cartones");
 
-    if (cartons) {
-        ReloadGame(cartons)
-    }
-    else {
+    userName = document.getElementById('userIdentity').innerText.substr(5, document.getElementById('userIdentity').innerText.length - 6);
+    
+    if (localStorage.getItem("JuegoHistorialId") != null && localStorage.getItem("JuegoHistorialId") != "") {
+        ReloadGame(localStorage.getItem("Cartones"));
+    }else {
         NewGame();
     }
 }
@@ -27,14 +27,14 @@ function ReloadGame(cartons) {
 // Armo partida según respuesta de API
 function NewGame() {
 
-    fetch('https://localhost:7062/api/Bingo/NewGame/?usuarioId=' + userId, { method: 'POST' })
+    fetch('https://localhost:7062/api/Bingo/NewGame/?usuarioName=' + userName, { method: 'POST' })
         .then((response) => response.json())
         .then((dataJSON) => {
             let oData = JSON.parse(dataJSON.data);
 
-            localStorage.setItem("Cartones", JSON.stringify(oData));
             localStorage.setItem("JuegoHistorialId", JSON.stringify(oData[0].JuegoHistorialId));
-            localStorage.setItem("Bolillas", "0");
+            localStorage.setItem("Cartones", JSON.stringify(oData));
+            localStorage.setItem("Bolillas", JSON.stringify([]));
             BuildParty(oData);
         }
     );
@@ -43,6 +43,7 @@ function NewGame() {
 
 // Construyo estructura de cartones y muestro última bolilla
 function BuildParty(oData) {
+    let band = 0;
     for (var item in oData) {
 
         let arrayNros = "";
@@ -52,7 +53,8 @@ function BuildParty(oData) {
         arrayNros = oData[item].Numeros.split(',');
 
         document.getElementById("cartones").innerHTML +=
-            "<div class='col-xl-5 col-lg-12 mb-4 ms-4 oCart' id='" + oData[item].NumeroCarton + "'>" +
+            "<div class='firstRow'></div>"+
+            "<div class='col m-2 oCart' id='" + oData[item].NumeroCarton + "'>" +
                 "<div class='row oFil'>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[0] + "</h3></div>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[3] + "</h3></div>" +
@@ -74,7 +76,7 @@ function BuildParty(oData) {
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[19] + "</h3></div>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[22] + "</h3></div>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[25] + "</h3></div>" +
-                "</div>" +
+                "</div>" + 
                 "<div class='row oFil'>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[2] + "</h3></div>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[5] + "</h3></div>" +
@@ -86,7 +88,11 @@ function BuildParty(oData) {
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[23] + "</h3></div>" +
                     "<div class='col C" + oData[item].NumeroCarton + " oCol'><h3 class='oNumber'>" + arrayNros[26] + "</h3></div>" +
                 "</div>";
-            "</div >";
+        
+        band = band + 1;
+        if (band == 2) {
+            document.getElementById("cartones").innerHTML += "<div class='w-100'></div>";
+        };
     };
 
     PaintCells();  
@@ -124,9 +130,9 @@ function CallNumber() {
                 ShowWinner(oData);
             }
             else {
-                SwalNewNumber(oData.Numeros);
-                AddNumber(oData.Numeros);
-                ShowNumber(oData.Numeros);
+                SwalNewNumber(oData);
+                AddNumber(oData);
+                ShowNumber(oData);
             }
         }
     );
@@ -134,7 +140,7 @@ function CallNumber() {
 
 // Muestro número en ventana
 function ShowNumber(number) {
-    document.getElementById("lastNumber").innerHTML = 'Bolilla: ' + number;
+    document.getElementById("lastNumber").innerHTML = 'Bolilla: ' + number.Numeros;
 }
 
 //Agrego a lista de números cantados
@@ -158,7 +164,7 @@ function ShowWinner(winners) {
 //SweetAlert Nuestro Número cantado
 function SwalNewNumber(number) {
     Swal.fire({
-        title: '<H3>Ha salido el Numero: </H3>' + number,
+        title: '<H3>Ha salido el Numero: </H3>' + number.Numeros,
         icon: 'info'
     });
 }
@@ -168,6 +174,11 @@ function SwalWinner(winners) {
         title: '<H3>El cartón ganador es: </H3>' + winners,
         icon: 'success'
     });
+    document.getElementById("btn-addNumber").setAttribute("onclick", "ToStart()");
+
+    document.getElementById("btn-addNumber").classList.remove("btn-primary");
+    document.getElementById("btn-addNumber").classList.add("btn-success");
+    document.getElementById("btn-addNumber").innerText = "Volver al inicio";
 }
 
 // Controla todos los números ya cantados
@@ -177,7 +188,7 @@ function CheckNumbers() {
 
     for (var n = 0; n < numbers.length; n++) {
         for (var c = 0; c < elemento.length; c++) {
-            if (numbers[n] == elemento[c].innerText) {
+            if (numbers[n].Numeros == elemento[c].innerText) {
                 elemento[c].classList.add("celCheck");
             };
         };
@@ -190,41 +201,17 @@ function CheckNewNumber(number) {
     var numbers = JSON.parse(localStorage.getItem("Bolillas"));
 
     for (var c = 0; c < elemento.length; c++) {
-        if (elemento[c].innerText == number) {
+        if (elemento[c].innerText == number.Numeros) {
             elemento[c].classList.add("celCheck");
         };
     };
-    CheckWinner();
 }
 
-
-
-
-// Controla si existe ganador
-/*function CheckWinner() {
-    var c1 = document.querySelectorAll('.C1.celCheck').length;
-    var c2 = document.querySelectorAll('.C2.celCheck').length;
-    var c3 = document.querySelectorAll('.C3.celCheck').length;
-    var c4 = document.querySelectorAll('.C4.celCheck').length;
-
-    if (c1 == 15 || c2 == 15 || c3 == 15 || c4 == 15) {
-        alert("Ganadores:");
-    }
-}*/
-
-/*
-//Botón para cantar números
-function Winner() {
-    let partidaId = localStorage.getItem("JuegoHistorialId");
-    fetch('https://localhost:7062/api/Bingo/Winner/?winners=' + partidaId, { method: 'PUT' })
-        .then((response) => response.json())
-        .then((dataJSON) => {
-            console.log(dataJSON);
-        }
-        );
+function ToStart() {
+    localStorage.setItem("JuegoHistorialId", "");
+    localStorage.setItem("Cartones", "");
+    localStorage.setItem("Bolillas", "0");
+    window.history.back();
 }
-*/
-
-
 
 Start();

@@ -1,4 +1,5 @@
 ﻿using JuegoBingoMVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,23 +19,11 @@ namespace JuegoBingoMVC.Controllers
             return View();
         }
 
-        /*public IActionResult Privacy()
-        {
-            return View();
-        }*/
-
+        [Authorize]
         public IActionResult NewGame()
         {
-            //Partida miPartida = new(4);
-            //return View(miPartida);
             return View();
         }
-
-        /*public IActionResult New(string user)
-        {
-
-            return View();
-        }*/
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

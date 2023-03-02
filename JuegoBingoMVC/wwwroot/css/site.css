@@ -1,20 +1,21 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+#btn-addNumber {
+    margin-top: 1rem;
+    margin-left: 5px;
+
+}
+
+.data {
+    font-size: 25px;
 }
 
 .oCart {
@@ -23,21 +24,133 @@ body {
 }
 
 .oCol {
-    height: 6rem;
     border: 1px solid #000000;
-    width: 100%;
+
 }
 
 .oNumber {
-    margin-top: 65%;
-    transform: scaleY(3);
+    margin-top: 20px;
+    margin-bottom: 20px;
     font-weight: 700;
 }
 
 .celEmpty {
-    background-color: aqua;
+    background-color: #38a9e1;
 }
+
 
 .celCheck {
     box-shadow: inset 0 0 0 5px red;
 }
+
+
+#icon {
+    width: 10rem;
+}
+
+
+
+/*Extra extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 531.98px) {
+    #icon {
+        width: 8rem;
+    }
+
+    .oCart {
+        border: 2px solid #000000;
+        text-align: center;
+    }
+
+    .celCheck {
+        box-shadow: inset 0 0 0 2px red;
+    }
+
+    .oNumber {
+        font-size: 0.7rem;
+        transform: scaleY(2);
+        margin-top: 12px;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+}
+
+/*Extra small devices (portrait phones, less than 576px)*/
+@media (min-width: 532px) and (max-width: 575.98px) {
+    #icon {
+        width: 8rem;
+    }
+
+    .oNumber {
+        font-size: 1.8rem;
+        transform: scaleY(2);
+        margin-top: 22px;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+}
+
+/*Small devices (landscape phones, 576px and up)*/ 
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .oNumber {
+        font-size: 1.8rem;
+        transform: scaleY(2);
+        margin-top: 22px;
+        margin-bottom: 25px;
+        font-weight: 700;
+    }
+}
+
+/*Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .oNumber {
+        font-size: 2.2rem;
+        transform: scaleY(2);
+        margin-top: 25px;
+        margin-bottom: 27px;
+        font-weight: 700;
+    }
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .firstRow {
+        display: none;
+    }
+    .oNumber {
+        font-size: 1.5rem;
+        transform: scaleY(2);
+        margin-top: 15px;
+        margin-bottom: 22px;
+        font-weight: 700;
+    }
+}
+
+/*Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .firstRow {
+        display: none;
+    }
+    .oNumber {
+        font-size: 2rem;
+        transform: scaleY(2);
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+}
+
+@media (min-width: 1400px) {
+    .firstRow {
+        display: none;
+    }
+
+    .oNumber {
+        font-size: 2.5rem;
+        transform: scaleY(2);
+        margin-top: 25px;
+        margin-bottom: 27px;
+        font-weight: 700;
+    }
+}
+
+
