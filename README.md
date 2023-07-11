@@ -1,2 +1,2 @@
-# BingoMVC
-Solución web del clásico juego de mesa Bingo.
+# Bingo
+Personalización de un trabajo final del curso de .NET del Polo Tecnológico de Mina Clavero. El mismo, emula de manera sencilla el juego Bingo con el propósito de fusionar los conceptos aprendidos.
