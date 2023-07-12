@@ -48,3 +48,10 @@ Al desarrollo funcional del juego especificado en el apartado de [Requerimientos
 - Menú de bienvenida para generado de nuevas partidas y cargado de la última partida sin terminar.
 - Sección para administración del usuario.
 - Vista para respuesta de error.
+
+
+## Planificacion
+El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
+---
+[Proyecto](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
+---
