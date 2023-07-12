@@ -22,3 +22,29 @@ Personalización de un trabajo final del curso de .NET del Polo Tecnológico de 
 - Una tabla llamada __HistorialBolillero__ que almacenará cada numero que se genere. Se almacenará la fecha y hora y el número de bolilla que se juega.
 - Una tabla llamada __HistorialCartones__ donde se guardará el número de Cartón o Cartones ganadores.
 - La tabla HistorialCartones contará con 5 campos: Uno con fecha y hora y luego 4 campos (_Carton1, Carton2, Carton3 y Carton4_) que admitan null donde se guarde el o los cartones ganadores. Ejemplo: Si resultaron ganadores los cartones 3 y 1, se guardarán datos en el campo Fecha y hora con la hora actual y el número 3 en el campo Carton1 y el número 1 en el campo Carton2.
+
+
+## Descripción
+El proyecto abarcará desde la presentación, la documentación y el desarrollo del mismo implementando un híbrido entre metodologías tradicional y ágil.
+
+Al desarrollo funcional del juego especificado en el apartado de [Requerimientos](#requerimientos) se agrega:
+- Arquitectura del software.
+- Modelado de base de datos.
+- Diagrama de experiencia de usuario de usuario.
+- Diseño de reportes:
+	- Mis partidas jugadas.
+	- Partidas general.
+	- Histórico exitoso  (números ganadores y su probabilidad).
+- Diseño de Dashboard informativo:
+	- Mis partidas jugadas.
+	- Números más jugados.
+	- Números con mayor éxito.
+	- Histórico exitoso  (números ganadores y su probabilidad).
+- Esquema de roles para usuarios.
+- Logeo y registro.
+- Validación de correos electrónicos.
+- Blanqueo de claves.
+- Seguridad de autorización y autenticación con JWT.
+- Menú de bienvenida para generado de nuevas partidas y cargado de la última partida sin terminar.
+- Sección para administración del usuario.
+- Vista para respuesta de error.
