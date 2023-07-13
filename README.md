@@ -52,6 +52,6 @@ Al desarrollo funcional del juego especificado en el apartado de [Requerimientos
 
 ## Planificacion
 El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
----
-[Proyecto](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
----
+
+
+[Hoja de ruta](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
