@@ -6,7 +6,7 @@ Este documento tiene por finalidad exponer el análisis del modelo actual respec
 ## Diagrama de Entidad Relación del modelo actual.
 
 ### Diagrama actual
-![Descripción de la imagen](Documentacion/Activos/Diagramas/Entidad_Relacion/ModeloDatos_Actual.jpg "Modelo de datos actual")
+![Descripción de la imagen](/Documentacion/ModeloDatos_Actual.jpg)
 
 
 ### Estudio
