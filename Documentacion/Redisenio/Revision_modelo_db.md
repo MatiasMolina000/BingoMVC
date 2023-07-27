@@ -48,26 +48,37 @@ Este documento tiene por finalidad exponer el análisis del modelo actual respec
         <tr>
             <td>Reporte: "Histórico exitoso (números ganadores y su probabilidad)"</td>
             <td>Se puede pre procesar los datos en otro esquema.</td>
-            <td>- Nuevo esquema <strong>Replica</strong>.<br>- ETL para el llenado de la tabla "Bolillero"*.</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de la tabla "Bolillero".</td>
         </tr>
         <tr>
-            <td>Dashboard: "Mis partidas jugadas"</td>
+            <td>Dashboard: "Total jugadores"</td>
             <td>Se puede pre procesar los datos en otro esquema.</td>
-            <td>- Nuevo esquema <strong>Replica</strong>.<br>- ETL para el llenado de la tabla "Partidas".</tr>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de la tabla "Partidas".</td>
+        </tr>
+        <tr>
+            <td>Dashboard: "Total números jugados"</td>
+            <td>Se puede pre procesar los datos en otro esquema.</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de la tabla "Partidas".<br>- Nuevo esquema, <strong>Historial</strong> donde se incluyen las tablas solicitadas "HistorialBolillero" e "HistorialCartones".<br>Procedimiento ETL/Tarea Programada para su llenado desde modelo <strong>dbo</strong>.</td>
+        </tr>
+        <tr>
+            <td>Dashboard: "Total partidas jugadas"</td>
+            <td>Se puede pre procesar los datos en otro esquema.</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de la tabla "Partidas".<br>- Nuevo esquema, <strong>Historial</strong> donde se incluyen las tablas solicitadas "HistorialBolillero" e "HistorialCartones".<br>Procedimiento ETL/Tarea Programada para su llenado desde modelo <strong>dbo</strong>.</td>
+        </tr>
         <tr>
             <td>Dashboard: "Números más jugados"</td>
             <td>Se puede pre procesar los datos en otro esquema.</td>
-            <td>Tablas solicitadas "HistorialBolillero" e "HistorialCartones":<br>- Nuevo esquema, <strong>Historial</strong> donde se incluyen.<br>- Procedimiento ETL/Tarea Programada para su llenado desde modelo <strong>dbo</strong>.</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de la tabla "Partidas".<br>- Nuevo esquema, <strong>Historial</strong> donde se incluyen las tablas solicitadas "HistorialBolillero" e "HistorialCartones".<br>Procedimiento ETL/Tarea Programada para su llenado desde modelo <strong>dbo</strong>.</td>
         </tr>
         <tr>
             <td>Dashboard: "Números con mayor éxito"</td>
             <td>Se puede pre procesar los datos en otro esquema.</td>
-            <td>- Nuevo esquema <strong>Replica</strong>.<br>- ETL para el llenado de las tablas "Partidas" y "Bolillero".</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de las tablas "Partidas" y "Bolillero".</td>
         </tr>
         <tr>
             <td>Dashboard: "Histórico exitoso (números ganadores y su probabilidad)"</td>
             <td>Se puede pre procesar los datos en otro esquema.</td>
-            <td>- Nuevo esquema <strong>Replica</strong>.<br>- ETL para el llenado de las tablas "Partidas" y "Bolillero".</td>
+            <td>- Nuevo esquema <strong>Replica</strong>.<br>Procedimiento ETL/Tarea Programada para el llenado de las tablas "Partidas" y "Bolillero".</td>
         </tr>
         <tr>
             <td>Esquema de roles para usuarios</td>
