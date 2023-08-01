@@ -6,7 +6,7 @@ Este documento tiene por finalidad exponer el análisis del modelo actual respec
 ## Diagrama de Entidad Relación del modelo actual.
 
 ### Diagrama actual
-![Modelo Anterior](/Documentacion/ModeloDatos_Actual.jpg)
+![Modelo Anterior](/Documentacion/Activos/ModeloDatos_Actual.jpg)
 
 
 ### Estudio
@@ -104,5 +104,5 @@ Este documento tiene por finalidad exponer el análisis del modelo actual respec
 </table>
 
 ### Diagrama nuevo
-![Modelo Nuevo](/Documentacion/ModeloDatos_Nuevo.jpg)
+![Modelo Nuevo](/Documentacion/Activos/ModeloDatos_Nuevo.jpg)
 
