@@ -36,10 +36,11 @@ Al desarrollo funcional del juego especificado en el apartado de [Requerimientos
 	- Partidas general.
 	- Histórico exitoso  (números ganadores y su probabilidad).
 - Diseño de Dashboard informativo:
-	- Mis partidas jugadas.
 	- Números más jugados.
 	- Números con mayor éxito.
 	- Histórico exitoso  (números ganadores y su probabilidad).
+	- Total números jugados.
+	- Total partidas jugadas.
 - Esquema de roles para usuarios.
 - Logeo y registro.
 - Validación de correos electrónicos.
@@ -53,5 +54,8 @@ Al desarrollo funcional del juego especificado en el apartado de [Requerimientos
 ## Planificacion
 El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
 
-
 [Hoja de ruta](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
+
+
+## Diseño
+...
