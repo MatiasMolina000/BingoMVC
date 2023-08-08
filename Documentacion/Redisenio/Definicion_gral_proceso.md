@@ -14,13 +14,13 @@ Este documento tiene por finalidad exponer el análisis de los procesos definido
 |7|Descripción-Diseño de Dashboard informativo|
 
 ## Listado de casos de uso
-| Id | Ito | Caso de Uso | Descripción |
-|----|-----|-------------|-------------|
-|**CU_1_1**|1|**Loguear**|Login de usuario en aplicación web|
-|**CU_1_2**|1|**Registrar usuario**|Registro único y por primera vez del usuario|
-|**CU_3**|2|**Validar correo**|Confrimación del correo por parte del usuario|
-|**CU_4**|3|**Blanquear clave**|Cambio de contraseña por parte del usuario|
-|**CU_5**|4|**Jugar**|Proceso central según la dinámica de juego en el requerimiento|
-|**CU_6**|5|**Modificar de datos personales**|Modificacion, por parte del usuario, de sus datos|
-|**CU_7**|6|**Ver reporte**|Acceso a los reportes|
-|**CU_8**|7|**Ver dashboard**|Acceso al tablero de infromación|
+| Id | Ito | Caso de Uso | Descripción | Prioridad | Complejidad |
+|----|-----|-------------|-------------|-----------|-------------|
+|**CU_1_1**|1|**Loguear**|Login de usuario en aplicación web|Alta|Baja|
+|**CU_1_2**|1|**Registrar usuario**|Registro único y por primera vez del usuario|Alta|Media|
+|**CU_2**|2|**Validar correo**|Confrimación del correo por parte del usuario|Media|Media|
+|**CU_3**|3|**Blanquear clave**|Cambio de contraseña por parte del usuario|Baja|Baja|
+|**CU_4**|4|**Jugar**|Proceso central según la dinámica de juego en el requerimiento|Alta|Alta|
+|**CU_5**|5|**Modificar de datos personales**|Modificacion, por parte del usuario, de sus datos|Baja|Baja|
+|**CU_6**|6|**Ver reporte**|Acceso a los reportes|Baja|Media|
+|**CU_7**|7|**Ver dashboard**|Acceso al tablero de infromación|Baja|Alta|
