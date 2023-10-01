@@ -109,7 +109,7 @@ El siguiente documento tiene por finalidad catalogar y presentar las distintas i
 #### Estructura generál del sistema
 
 <section align=center>
-    <img src="">
+    <img src="./docs/assets/Contexto.jpg">
 </section>
 
 #### Estructura generál de la solución
