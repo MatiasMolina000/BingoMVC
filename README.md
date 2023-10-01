@@ -75,7 +75,7 @@ El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
 ### ⬇️ Flujo de trabajo
 
 <section align=center>
-    <img src="">
+    <img src="./docs/assets/FlujoDeUsuario.jpg">
 </section>
 
 <br>
