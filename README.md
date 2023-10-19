@@ -3,49 +3,47 @@
 # Bingo
 
 
-[Documentación](https://github.com/MatiasMolina000/Juegobingo/tree/main)
+[Documentation](https://github.com/MatiasMolina000/Juegobingo/tree/main)
 ·
-[Reportar Bug](https://github.com/MatiasMolina000/Juegobingo/issues)
+[Report Bug](https://github.com/MatiasMolina000/Juegobingo/issues)
 ·
-[Solicitar Feature](https://github.com/MatiasMolina000/Juegobingo/issues)
+[Request Feature](https://github.com/MatiasMolina000/Juegobingo/issues)
 
 </section>
 
 <br><br>
 
-## 💼 Sobre el proyecto
-Personalización de un trabajo final del curso de .NET del Polo Tecnológico de Mina Clavero con el propósito de fusionar los conceptos aprendidos y lograr una solución integral.
+## 💼 About the proyecto
+Final project of the **Introducción .NET 6** course at *"Polo Tecnológico de Mina Clavero"*, customized with the purpose of merging the concepts learned and achieving a comprehensive solution.
 
 <br><br>
 
-## 📝 Requerimientos
+## 📝 Requirements
+For this proyect, the focus is on three aspects:
+ - Game dynamics.
+ - Bingo cards construction.
+ - Storable information.
 
-Para este proyecto se hacen foco en tres aspectos, 
-- Dinámica de Juego. 
-- Construcción de los cartones.
-- Información almacenable.
-
-
-#### 📋 [Detalle](./docs/Requerimientos.md)
+#### 🔎 [View more: Requirements.md](./docs/Requirements.md)
 
 <br><br>
 
-## 📖 Propuesta.
-El objetivo de este proyecto es lograr una aplicación práctica de usar aplicando algunos conocimientos técnicos de desarrollo y de gestión y documentación.
+## 📖 Proposal.
+The objective of this project is to achieve a practical application by applying some technical development and management and documentation knowledge.
 
-Para más detalle sobre la definisión del proyecto puede acceder al siguiente enlace.
-#### 📋 [Proyecto](./docs/Proyecto.md)
-
-<br><br>
-
-## 📈 Planificacion
-El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
-
-#### 🎫 [Hoja de ruta](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
+For more details regarding the project definition, you can access the following link.
+#### 🔎 [View more: Proyect.md](./docs/Proyect.md)
 
 <br><br>
 
-## ✏️ Diseño
+## 📈 Planning
+The following link will redirect you to the repository's list of issues:
+
+#### 🎫 [View more: Issues](https://github.com/users/MatiasMolina000/projects/1/views/2?layout=roadmap)
+
+<br><br>
+
+## ✏️ Design
 
 <br>
 
@@ -54,43 +52,55 @@ El siguiente enlace lo redirecionará a la hoja de ruta del proyecto:
 <table align=center>
     <thead>
         <tr>
-            <th>Puestos</th>
+            <th>Positions</th>
             <th>Roles</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Administrador: usuario con acceso a métricas generales.</td>
+            <td>Administrator: user with acces to general metrics.</td>
             <td>Admin</td>
         </tr>
         <tr>
-            <td>Cliente: usuario a quien está destinada la aplicación</td>
-            <td>Jugador</td>
+            <td>Client: user for whom the application is intended.</td>
+            <td>Player</td>
         </tr>
     </tbody>
 </table>
 
 <br>
 
-### ⬇️ Flujo de trabajo
+### ⬇️ Whorkflow
+To explain and understand the process and translate it inot the user's experience, it is represented through the following User Flow Diagram.
 
 <section align=center>
-    <img src="./docs/assets/FlujoDeUsuario.jpg">
+    <img src="./docs/assets/diagrams/UserFlow.jpg">
 </section>
 
 <br>
 
-### 👤 Casos de Uso
+### 👤 Use Cases
 
-El siguiente documento tiene por finalidad definir los distintos casos de uso en resultado al análisis de los procesos definidos en el apartado requerimientos del README.md de la rama main del repositorio.
+<section align=center>
+    <img src="./docs/assets/diagrams/useCases.jpg">
+</section>
 
-#### 📋 [Definisión]()
+#### 🔎 [View more. General process definition](./docs/redesign/General_process_definition.md)
 
 <br>
 
 ### 🔖 Diagrama Entidad-Relación
 
-#### 📋 [Diccionario de datos]()
+<section align=center>
+    <img src="./docs/assets/diagrams/New_DER.jpg">
+</section>
+
+<br>
+
+You can see the analysis that precedes the design of the diagram at the following link: 
+- 🔬 [**Analysis**](./docs/redesign/Database_model_review.md)
+
+#### 📋 [View more: Data_Dictionary.md](./docs/redesign/Data_Dictionary.md)
 
 <br>
 
@@ -98,28 +108,30 @@ El siguiente documento tiene por finalidad definir los distintos casos de uso en
 
 El siguiente documento tiene por finalidad catalogar y presentar las distintas interfces que compondrán la solución y que servirán como refernte para el desarrollo de las vistas y los modelos para la comunicación.
 
-#### 📋 [Descripción de interfaces]()
+<!--
+#### 📋 [Interface_Description.md]()
+-->
 
 <br><br>
 
-## 💻 Solución
+## 💻 Solution
 
-### 📐 Arquitectura
+### 📐 Architecture
 
-#### Estructura generál del sistema
+#### General System Structure
 
 <section align=center>
-    <img src="./docs/assets/Contexto.jpg">
+    <img src="./" alt="Context diagram">
 </section>
 
-#### Estructura generál de la solución
+#### General Solition Structure
 
 #### 👾 Stack
 
-#### 🌸 [Front End]()
-#### 💀 [Back End]()
-#### 🏦 [Store]()
+- 🌸 [Front End]()
+- 💀 [Back End]()
+- 🏦 [Store]()
 
-## 🚀 Despliegue
+## 🚀 Deploy
 
 ...
