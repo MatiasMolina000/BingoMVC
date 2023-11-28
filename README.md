@@ -28,7 +28,7 @@ For this proyect, the focus is on three aspects:
 
 <br><br>
 
-## 📖 Proposal.
+## 📖 Proposal
 The objective of this project is to achieve a practical application by applying some technical development and management and documentation knowledge.
 
 For more details regarding the project definition, you can access the following link.
@@ -89,7 +89,7 @@ To explain and understand the process and translate it inot the user's experienc
 
 <br>
 
-### 🔖 Diagrama Entidad-Relación
+### 🔖 Entity-Relationship diagram
 
 <section align=center>
     <img src="./docs/assets/diagrams/New_DER.jpg">
@@ -106,7 +106,7 @@ You can see the analysis that precedes the design of the diagram at the followin
 
 ### 👓 Interfaces
 
-El siguiente documento tiene por finalidad catalogar y presentar las distintas interfces que compondrán la solución y que servirán como refernte para el desarrollo de las vistas y los modelos para la comunicación.
+The purpose of the following document is to catalog and present the various interfaces that will compose the solution and will serve as a reference for the development of views and models for communication.
 
 <!--
 #### 📋 [Interface_Description.md]()
