@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td class="bolded">Objective:</strong></td>
-            <td colspan="3">The user can log in nomraly after a password lock.</td>
+            <td colspan="3">The user can log in nomraly after a password lock or sing up.</td>
         </tr>
         <tr>
             <td class="bolded">Precondition:</strong></td>
