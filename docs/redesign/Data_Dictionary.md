@@ -98,6 +98,7 @@ In this section, the metadata of the proposed model is documented, classified by
 | User | varchar | 25 bytes | No | N/A | N/A | Name of the user |
 | Email | varchar | 50 bytes | No | N/A | N/A | Name of the user's email |
 | Password | varchar | 64 bytes | No | N/A | N/A | User's password |
+| PassTemp | varchar | 64 bytes | No | N/A | N/A | User's temporal password |
 | Created | datetime | 8 bytes | No | N/A | N/A | CDT of the a user |
 
 </article>
