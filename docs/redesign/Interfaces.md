@@ -22,10 +22,10 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Name | User | User | string | 25 bytes | No | N/A |
+| Password | User | Password | string | 64 bytes | No | N/A |
 
 </article>
 
@@ -45,11 +45,11 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Email | varchar | 50 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Name | User | User | string | 25 bytes | No | N/A |
+| Email | User | Email | varchar | 50 bytes | No | N/A |
+| Password | User | Pas | string | 64 bytes | No | N/A |
 
 </article>
 
@@ -69,11 +69,10 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Email | varchar | 50 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Id | User | Id | int | 4 bytes | No | N/A |
+| Verification code | PasswordTemp | User | string | 64 bytes | No | N/A |
 
 </article>
 
@@ -93,11 +92,11 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Email | varchar | 50 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Id | User | Id | string | 25 bytes | No | N/A |
+| Status | UStatus | Id | tinyint | 1 bytes | No | N/A |
+| Id | BingoCage | Id | tinyint | 1 bytes | No | N/A |
 
 </article>
 
@@ -117,11 +116,18 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Email | varchar | 50 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Id | User | Id | string | 25 bytes | No | N/A |
+| Status | UStatus | Id | tinyint | 1 bytes | No | N/A |
+| Id | Games | Id | int | 1 bytes | No | N/A |
+| Status | Games | StatusId | tinyint | 1 bytes | No | N/A |
+| Numbers | BingoCage | Number | int | 4 bytes | No | N/A |
+| Id | BingoCard | Id | bigint | 8 bytes | No | N/A |
+| Card | BingoCard | Card | tinyint | 1 bytes | No | N/A |
+| Numbers | BingoCard | Numbers | varchar | 100 bytes | No | N/A |
+| OrderedN | BingoCard | OrderedN | varchar | 100 bytes | No | N/A |
+| Completed | BingoCard | Completed | bit | 1 bytes | No | N/A |
 
 </article>
 
@@ -141,11 +147,11 @@ This document aims to present the various interfaces that will compose the solut
 
 - <u>**Data:**</u>
 
-| Name | Type of field | Length | Allows Null | Deffautlt value | Entity | 
-|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|
-| User | string | 25 bytes | No | N/A | User |
-| Email | varchar | 50 bytes | No | N/A | User |
-| Password | string | 64 bytes | No | N/A | User |
+| Field | Entity | Name | Type of field | Length | Allows Null | Deffautlt value | 
+|:-----:|:------:|:----:|:-------------:|:------:|:-----------:|:---------------:|
+| Name | User | User | string | 25 bytes | No | N/A |
+| Email | User | Email | varchar | 50 bytes | No | N/A |
+| Password | User | Pas | string | 64 bytes | No | N/A |
 
 </article>
 
