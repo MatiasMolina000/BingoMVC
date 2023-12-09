@@ -121,7 +121,7 @@ The purpose of the following document is to catalog and present the various inte
 #### General System Structure
 
 <section align=center>
-    <img src="./" alt="Context diagram">
+    <img src="./docs/assets/diagrams/Context.jpg" alt="Context diagram">
 </section>
 
 #### General Solition Structure
