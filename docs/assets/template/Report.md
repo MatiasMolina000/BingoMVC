@@ -1,5 +1,3 @@
-<style>.bolded{font-weight:bold;}table{border:4px solid;}</style>
-
 <h3 align=center>📌 Report</h3>
 <hr>
 <br>
