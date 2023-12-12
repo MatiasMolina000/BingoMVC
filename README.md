@@ -108,9 +108,9 @@ You can see the analysis that precedes the design of the diagram at the followin
 
 The purpose of the following document is to catalog and present the various interfaces that will compose the solution and will serve as a reference for the development of views and models for communication.
 
-<!--
-#### 📋 [Interface_Description.md]()
--->
+
+#### 📋 [Interfaces.md](./docs/redesign/Interfaces.md)
+
 
 <br><br>
 
@@ -126,11 +126,26 @@ The purpose of the following document is to catalog and present the various inte
 
 #### General Solition Structure
 
-#### 👾 Stack
+<section align=center>
+    <img src="./docs/assets/diagrams/Solution.jpg" alt="Context diagram">
+</section>
+
+### 👾 Stack
+
+<table align=center>
+    <tr><th>Technology</th><tr>
+    </tr><td>Angular 16</td></tr>
+    </tr><td>.NET Core 6</td></tr>
+    </tr><td>SQL Server 2019</td></tr>
+</table>
+
+<br>
 
 - 🌸 [Front End]()
 - 💀 [Back End]()
 - 🏦 [Store]()
+
+<br><br>
 
 ## 🚀 Deploy
 
