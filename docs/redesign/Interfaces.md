@@ -16,6 +16,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-1.jpg" alt="SC-1">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View for user authentication and access to the web application. 
@@ -39,6 +40,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-2.jpg" alt="SC-2">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View for user registration in the database. 
@@ -63,6 +65,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-3.jpg" alt="SC-3">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View for usert to confirm their e-mail after a password lock or sing up.
@@ -86,6 +89,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-4.jpg" alt="SC-4">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View of main menu after user  autentication. 
@@ -110,6 +114,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-5.jpg" alt="SC-5">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View of the bingo game. 
@@ -141,6 +146,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-6.jpg" alt="SC-6">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View for the user modifies their user data. 
@@ -165,6 +171,7 @@ This document aims to present the various interfaces that will compose the solut
 
 <div align=center>
 <img src="../assets/interfaces/SC-7.jpg" alt="SC-7">
+<span><a href="">Low-Fidelity</a></span>
 </div>
 
 - <u>**Description:**</u> View for displays the requested information. 
