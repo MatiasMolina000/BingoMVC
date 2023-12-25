@@ -7,7 +7,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-
 namespace APIBingo.Rules
 {
     public class AuthRules
@@ -18,10 +17,10 @@ namespace APIBingo.Rules
         public AuthRules(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<string?> Authentication(UserRequest oUserReq, IConfiguration iConfig)
+        public async Task<string?> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
         {
             string? token = string.Empty;
-            UserModel? auth = await new AuthData(_connectionFactory).Authentication(oUserReq);
+            UserModel? auth = await new AuthData(_connectionFactory).Authentication(oAuthReq);
             if (auth != null) token = GetToken(auth, iConfig);
             return token;
         }

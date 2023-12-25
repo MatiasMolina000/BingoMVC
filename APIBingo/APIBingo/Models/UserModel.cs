@@ -18,5 +18,4 @@ namespace APIBingo.Models
         public string PassTemp { get; set; } = "";
         public DateTime? Created { get; set; }
     }
-
 }

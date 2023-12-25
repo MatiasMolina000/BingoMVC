@@ -1,7 +1,6 @@
 ﻿using APIBingo.Models.Request;
 using APIBingo.Rules;
 using APIBingo.Services.Connection;
-using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIBingo.Controllers
@@ -23,10 +22,10 @@ namespace APIBingo.Controllers
 
 
         [HttpPost("Authentication")]
-        public async Task<IActionResult> Authentication([FromBody] UserRequest oModel) 
+        public async Task<IActionResult> Authentication([FromBody] AuthRequest oModel) 
         {
             var auth = await new AuthRules(_connectionFactory).Authentication(oModel, _iConfiguration);
-            return Ok(auth);
+            return Ok(new { token = auth});
         }
     }
 }

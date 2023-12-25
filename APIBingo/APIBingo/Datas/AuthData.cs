@@ -3,7 +3,7 @@ using APIBingo.Models.Request;
 using APIBingo.Services.Connection;
 using System.Data;
 using Dapper;
-using System.Data.SqlClient;
+using APIBingo.Services;
 
 namespace APIBingo.Datas
 {
@@ -15,22 +15,11 @@ namespace APIBingo.Datas
         public AuthData(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<UserModel?> Authentication(UserRequest oModel)
+        public async Task<UserModel?> Authentication(AuthRequest oModel)
         {
             string query = "SELECT * FROM Users WITH(NOLOCK) WHERE Email = @Email AND Password = @Password";
-            using IDbConnection cnn = _connectionFactory.CreateConnection();
-            //using var cnn = new SqlConnection("Server=(local)\\SQLEXPRESS;Database=BingoGame;Trusted_Connection=True;MultipleActiveResultSets=true");
-            try
-            {
-                var data = await cnn.QueryFirstOrDefaultAsync<UserModel>(query, oModel);
-                cnn.Close();
-                return data;
-            }
-            catch (Exception)
-            {
-                cnn.Close();
-                return default;
-            }
+            UserModel? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetSingleObjectAsync<UserModel?>(query, oModel);
+            return data;
         }
     }
 }
