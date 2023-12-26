@@ -1,6 +1,7 @@
 ﻿using APIBingo.Datas;
 using APIBingo.Models;
 using APIBingo.Models.Request;
+using APIBingo.Models.Response;
 using APIBingo.Services.Connection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,15 +18,25 @@ namespace APIBingo.Rules
         public AuthRules(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<string?> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
+        public async Task<ResultResponse<object>> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
         {
-            string? token = string.Empty;
+            ResultResponse<object> response = new() { Message = "Access denied." };
+            string token = "";
+
             UserModel? auth = await new AuthData(_connectionFactory).Authentication(oAuthReq);
-            if (auth != null) token = GetToken(auth, iConfig);
-            return token;
+
+            if (auth != null) 
+            { 
+                token = GetToken(auth, iConfig);
+                response.Success = true;
+                response.Message = "Authentication successfull.";
+            }
+            response.Data = new { Token = token };
+
+            return response;
         }
 
-        private static string? GetToken(UserModel oModel, IConfiguration iConfig)
+        private static string GetToken(UserModel oModel, IConfiguration iConfig)
         {
             ClaimsIdentity subject = new(new[]
             {
@@ -51,7 +62,7 @@ namespace APIBingo.Rules
 
             JwtSecurityTokenHandler tokenHandler = new();
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            string? jwtToken = tokenHandler.WriteToken(token);
+            string jwtToken = tokenHandler.WriteToken(token);
             return jwtToken;
         }
     }

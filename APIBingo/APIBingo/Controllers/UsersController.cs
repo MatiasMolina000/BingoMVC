@@ -1,4 +1,5 @@
 ﻿using APIBingo.Models.Request;
+using APIBingo.Models.Response;
 using APIBingo.Rules;
 using APIBingo.Services.Connection;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,10 @@ namespace APIBingo.Controllers
 
 
         [HttpPost("New")]
-        public async Task<IActionResult> New([FromBody] UserRequest oModel) 
+        public async Task<ResultResponse<UserRequest>> New([FromBody] UserRequest oModel) 
         {
-            var rule = await new UserRule(_connectionFactory).New(oModel);
-            if (rule != null) return BadRequest(rule);
-            return Ok();
+            ResultResponse<UserRequest> rule = await new UserRule(_connectionFactory).New(oModel);
+            return rule;
         }
     }
 }
