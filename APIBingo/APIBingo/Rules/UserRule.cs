@@ -2,7 +2,9 @@
 using APIBingo.Models;
 using APIBingo.Models.Request;
 using APIBingo.Models.Response;
+using APIBingo.Services;
 using APIBingo.Services.Connection;
+using APIBingo.Services.Notification;
 
 namespace APIBingo.Rules
 {
@@ -14,7 +16,7 @@ namespace APIBingo.Rules
         public UserRule(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<ResultResponse<UserRequest>> New(UserRequest oModel)
+        public async Task<ResultResponse<UserRequest>> New(UserRequest oModel, IEMailNotification notificationEMail)
         {
             ResultResponse<UserRequest> response = new() { Data = oModel };
 
@@ -35,12 +37,12 @@ namespace APIBingo.Rules
                     Password = oModel.Password,
                     PassTemp = rndNum.ToString(),
                 };
-                var add = await new UserData(_connectionFactory).New(oUser);
-                if (add != null)
+                response.Message = await new UserData(_connectionFactory).New(oUser);
+                if (response.Message == null)
                 {
-                    response.Message = add;
+                    response.Success = true;
+                    new EMailNotificationService(notificationEMail).ValidationMail(oUser.Email, oUser.PassTemp);
                 }
-                response.Success = true;
             }
 
             return response;
