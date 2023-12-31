@@ -1,6 +1,9 @@
 using APIBingo.Services.Connection;
 using APIBingo.Services.Notification;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +49,30 @@ builder.Services.AddSwaggerGen(sg => {
 });
 // _ End SWAGGER.
 
+// o Start JWT AUTENTICATION. ======================================================================>>>
+builder.Services.AddAuthentication(a =>
+{
+    a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(jwtb =>
+{
+    jwtb.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+    };
+});
+// Add configuration from appsettings.json
+// builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).AddEnvironmentVariables();
+// _ End JWT AUTENTICATION.
 
 var app = builder.Build();
 
@@ -64,6 +91,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// JWT
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

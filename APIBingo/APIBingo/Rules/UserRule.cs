@@ -20,7 +20,7 @@ namespace APIBingo.Rules
         {
             ResultResponse<UserRequest> response = new() { Data = oModel };
 
-            var exist = await new UserData(_connectionFactory).CheckByUserOrEmail(oModel);
+            var exist = await new UserData(_connectionFactory).CheckByUserOrEMail(oModel);
             if (exist)
             {
                 response.Message = "The user or email already exist.";
@@ -45,6 +45,26 @@ namespace APIBingo.Rules
                 }
             }
 
+            return response;
+        }
+
+        public async Task<ResultResponse<bool>> EMailValidation(string? nameId, string code) 
+        {
+            ResultResponse<bool> response = new();
+            UserModel? oUser = await new UserData(_connectionFactory).GetById(nameId ?? "");
+            if (oUser == null || oUser.PassTemp != code)
+            {
+                response.Message = "Unauthorized.";
+            }
+            else 
+            {
+                response.Message = await new UserData(_connectionFactory).EMailValidator(oUser);
+                if (response.Message == null)
+                {
+                    response.Success = true;
+                    response.Data = true;
+                }
+            }
             return response;
         }
     }

@@ -40,11 +40,11 @@ namespace APIBingo.Rules
         {
             ClaimsIdentity subject = new(new[]
             {
-                new Claim(JwtRegisteredClaimNames.NameId, oModel.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, oModel.User),
                 new Claim(JwtRegisteredClaimNames.Email, oModel.Email)
             });
-            subject.AddClaim(new Claim("Password", oModel.Password));
+            subject.AddClaim(new Claim("nameId", oModel.Id.ToString()));
+            subject.AddClaim(new Claim("password", oModel.Password));
 
             string issuer = iConfig["Jwt:Issuer"];
             string audience = iConfig["Jwt:Audience"];
