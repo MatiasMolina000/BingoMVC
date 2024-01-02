@@ -1,8 +1,6 @@
 ﻿using APIBingo.Models;
 using APIBingo.Models.Request;
 using APIBingo.Services.Connection;
-using System.Data;
-using Dapper;
 using APIBingo.Services;
 
 namespace APIBingo.Datas

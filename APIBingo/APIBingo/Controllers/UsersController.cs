@@ -13,16 +13,16 @@ namespace APIBingo.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IConfiguration _iConfiguration;
         private readonly IDBFactoryConnection _connectionFactory;
         private readonly IEMailNotification _notificationEMail;
-        private readonly IConfiguration _iConfiguration;
 
 
-        public UsersController(IDBFactoryConnection connectionFactory, IEMailNotification notificationEMail, IConfiguration iConfiguration)
+        public UsersController(IConfiguration iConfiguration, IDBFactoryConnection connectionFactory, IEMailNotification notificationEMail)
         { 
+            _iConfiguration = iConfiguration;
             _connectionFactory = connectionFactory;
             _notificationEMail = notificationEMail;
-            _iConfiguration = iConfiguration;
         }
 
 
@@ -60,7 +60,7 @@ namespace APIBingo.Controllers
                     oAuth.Id = numId;
             }  
 
-            ResultResponse<UserRequest> rule = await new UserRule(_connectionFactory, _iConfiguration).Update(oModel, oAuth, _notificationEMail);
+            ResultResponse<UserRequest> rule = await new UserRule(_iConfiguration, _connectionFactory).Update(oModel, oAuth, _notificationEMail);
             return rule;
         }
     }

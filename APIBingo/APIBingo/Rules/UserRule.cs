@@ -11,17 +11,18 @@ namespace APIBingo.Rules
 {
     public class UserRule
     {
-        private readonly IDBFactoryConnection _connectionFactory;
         private readonly IConfiguration? _iConfiguration;
+        private readonly IDBFactoryConnection _connectionFactory;
 
+
+        public UserRule(IConfiguration iConfiguration, IDBFactoryConnection connectionFactory)
+        { 
+            _iConfiguration = iConfiguration;
+            _connectionFactory = connectionFactory;
+        }
 
         public UserRule(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
-        public UserRule(IDBFactoryConnection connectionFactory, IConfiguration iConfiguration)
-        { 
-            _connectionFactory = connectionFactory;
-            _iConfiguration = iConfiguration;
-        }
 
         public async Task<ResultResponse<UserRequest>> New(UserRequest oModel, IEMailNotification notificationEMail)
         {

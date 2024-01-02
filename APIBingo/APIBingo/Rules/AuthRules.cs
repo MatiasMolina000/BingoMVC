@@ -12,13 +12,18 @@ namespace APIBingo.Rules
 {
     public class AuthRules
     {
+        private readonly IConfiguration _iConfiguration;
         private readonly IDBFactoryConnection _connectionFactory;
 
 
-        public AuthRules(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
+        public AuthRules(IConfiguration iConfiguration, IDBFactoryConnection connectionFactory) 
+        { 
+            _iConfiguration = iConfiguration;
+            _connectionFactory = connectionFactory;
+        } 
 
 
-        public async Task<ResultResponse<TokenModel>> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
+        public async Task<ResultResponse<TokenModel>> Authentication(AuthRequest oAuthReq)
         {
             ResultResponse<TokenModel> response = new() { Message = "Access denied." };
             string token = "";
@@ -27,7 +32,7 @@ namespace APIBingo.Rules
 
             if (auth != null) 
             { 
-                token = GetToken(auth, iConfig);
+                token = GetToken(auth, _iConfiguration);
                 response.Success = true;
                 response.Message = "Authentication successfull.";
             }
@@ -36,7 +41,7 @@ namespace APIBingo.Rules
             return response;
         }
 
-        private static string GetToken(UserModel oModel, IConfiguration iConfig)
+        private static string GetToken(UserModel oModel, IConfiguration iConfiguration)
         {
             ClaimsIdentity subject = new(new[]
             {
@@ -46,9 +51,9 @@ namespace APIBingo.Rules
             subject.AddClaim(new Claim("nameId", oModel.Id.ToString()));
             subject.AddClaim(new Claim("password", oModel.Password));
 
-            string issuer = iConfig["Jwt:Issuer"];
-            string audience = iConfig["Jwt:Audience"];
-            byte[] key = Encoding.ASCII.GetBytes(iConfig["Jwt:Key"]);
+            string issuer = iConfiguration["Jwt:Issuer"];
+            string audience = iConfiguration["Jwt:Audience"];
+            byte[] key = Encoding.ASCII.GetBytes(iConfiguration["Jwt:Key"]);
             SigningCredentials signingCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
 
             SecurityTokenDescriptor tokenDescriptor = new()

@@ -22,11 +22,10 @@ namespace APIBingo.Controllers
         } 
 
 
-
         [HttpPost("Authentication")]
         public async Task<ResultResponse<TokenModel>> Authentication([FromBody] AuthRequest oModel) 
         {
-            ResultResponse<TokenModel> auth = await new AuthRules(_connectionFactory).Authentication(oModel, _iConfiguration);
+            ResultResponse<TokenModel> auth = await new AuthRules(_iConfiguration, _connectionFactory).Authentication(oModel, _iConfiguration);
             return auth;
         }
     }
