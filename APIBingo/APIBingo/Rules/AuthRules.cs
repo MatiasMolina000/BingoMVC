@@ -18,9 +18,9 @@ namespace APIBingo.Rules
         public AuthRules(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<ResultResponse<object>> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
+        public async Task<ResultResponse<TokenModel>> Authentication(AuthRequest oAuthReq, IConfiguration iConfig)
         {
-            ResultResponse<object> response = new() { Message = "Access denied." };
+            ResultResponse<TokenModel> response = new() { Message = "Access denied." };
             string token = "";
 
             UserModel? auth = await new AuthData(_connectionFactory).Authentication(oAuthReq);
@@ -31,7 +31,7 @@ namespace APIBingo.Rules
                 response.Success = true;
                 response.Message = "Authentication successfull.";
             }
-            response.Data = new { Token = token };
+            response.Data = new TokenModel(){ Token = token };
 
             return response;
         }

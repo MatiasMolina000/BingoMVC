@@ -5,16 +5,23 @@ using APIBingo.Models.Response;
 using APIBingo.Services;
 using APIBingo.Services.Connection;
 using APIBingo.Services.Notification;
+using System.ComponentModel.DataAnnotations;
 
 namespace APIBingo.Rules
 {
     public class UserRule
     {
         private readonly IDBFactoryConnection _connectionFactory;
+        private readonly IConfiguration? _iConfiguration;
 
 
         public UserRule(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
+        public UserRule(IDBFactoryConnection connectionFactory, IConfiguration iConfiguration)
+        { 
+            _connectionFactory = connectionFactory;
+            _iConfiguration = iConfiguration;
+        }
 
         public async Task<ResultResponse<UserRequest>> New(UserRequest oModel, IEMailNotification notificationEMail)
         {
@@ -63,6 +70,73 @@ namespace APIBingo.Rules
                 {
                     response.Success = true;
                     response.Data = true;
+                }
+            }
+            return response;
+        }
+
+        public async Task<ResultResponse<UserRequest>> Update(UserRequest oModel, UserModel oAuth, IEMailNotification notificationEMail)
+        {
+            ResultResponse<UserRequest> response = new() { Data = oModel };
+
+            UserModel? oUser = await new UserData(_connectionFactory).GetById(oAuth.Id.ToString());
+            if (oUser == null || (oUser.User != oAuth.User || oUser.Email != oAuth.Email || oUser.Password != oAuth.Password))
+            {
+                response.Message = "Unauthorized.";
+            }
+            else
+            {
+                oAuth.User = oModel.User;
+                oAuth.Email = oModel.Email;
+                var exist = await new UserData(_connectionFactory).CheckUpdatesByUserOrEMail(oAuth);
+                if (exist)
+                {
+                    response.Message = "The user or email already exist.";
+                }
+                else 
+                {
+                    if (oUser.User != oModel.User || oUser.Email != oModel.Email || oUser.Password != oModel.Password) 
+                    {
+                        if (oModel.Email == null || !new EmailAddressAttribute().IsValid(oModel.Email))
+                        {
+                            response.Message = "The email format is not valid.";
+                        }
+                        else 
+                        {
+                            bool changesEMail = false;
+                            oUser.User = oModel.User;
+                            oUser.Password = oModel.Password;
+                            if (oUser.Email != oModel.Email)
+                            {
+                                oUser.Email = oModel.Email;
+                                Random rnd = new();
+                                int rndNum = rnd.Next(1000, 1000000);
+                                oUser.PassTemp = rndNum.ToString();
+                                oUser.StatusId = 3;
+                                changesEMail = true;
+                            }
+
+                            response.Message = await new UserData(_connectionFactory).Update(oUser);
+                            if (response.Message == null)
+                            {
+                                AuthRequest oAuthReq = new()
+                                {
+                                    Email = oUser.Email,
+                                    Password = oUser.Password
+                                };
+                                ResultResponse<TokenModel> auth = await new AuthRules(_connectionFactory).Authentication(oAuthReq, _iConfiguration);
+
+                                response.Message = auth.Data?.Token;
+                                response.Success = true;
+                                if (changesEMail)
+                                    new EMailNotificationService(notificationEMail).ValidationMail(oUser.Email, oUser.PassTemp);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        response.Message = "There are not changes to save.";
+                    }
                 }
             }
             return response;

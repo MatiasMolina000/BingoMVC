@@ -44,5 +44,22 @@ namespace APIBingo.Datas
                 return "An error ocurred while saving the user";
             return null;
         }
+
+        public async Task<bool> CheckUpdatesByUserOrEMail(UserModel oUser)
+        {
+            string query = "SELECT * FROM Users WITH(NOLOCK) WHERE Id <> @Id AND ([User] = @User OR Email = @Email);";
+            UserRequest? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetSingleObjectAsync<UserRequest?>(query, oUser);
+            if (data != null) return true;
+            return false;
+        }
+        
+        public async Task<string?> Update(UserModel oUser)
+        {
+            string query = "UPDATE Users SET [User] = @User, Email = @Email, [Password] = @Password, PassTemp = @PassTemp, StatusId = @StatusId WHERE Id = @Id;";
+            string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleStringAsync(query, oUser);
+            if (data == null || data == "0")
+                return "An error ocurred while saving the changes";
+            return null;
+        }
     }
 }
