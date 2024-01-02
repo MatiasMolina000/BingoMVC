@@ -7,7 +7,7 @@ namespace APIBingo.Models
         [Required]
         public int Id { get; set; }
         [Required]
-        public short StautsId { get; set; }
+        public short StatusId { get; set; }
         [Required]
         public string User { get; set; } = "";
         [Required]
