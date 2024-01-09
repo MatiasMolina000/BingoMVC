@@ -24,12 +24,31 @@ namespace APIBingo.Rules
             if (oUser == null)
             {
                 response.Message = "Unauthorized.";
-                response.Success = false;
             }
             else 
             { 
                 GameModel game = new(oUser);
-                response.Data = game;
+                string? data = await new GameData(_connectionFactory).NewGame(game);
+                if (data == null)
+                {
+                    response.Message = "An error ocurred while saving game.";
+                }
+                else 
+                {
+                    game.Id = int.Parse(data);
+                    game.OBingoCards.ForEach(iBingoCard => iBingoCard.GameId = game.Id);
+
+                    data = await new GameData(_connectionFactory).NewGameBingoCards(game.OBingoCards);
+                    if (data == null)
+                    {
+                        response.Message = "An error ocurred while saving the bingo cards.";
+                    }
+                    else 
+                    {
+                        response.Success = true;
+                        response.Data = game;
+                    }
+                }
             }
             return response;
         }

@@ -29,7 +29,7 @@ namespace APIBingo.Services
             }
         }
 
-        //Execute and return number of rows afected or las id (using SELECT SCOPE_IDENTITY())
+        //Execute and return number of rows afected
         public async Task<string?> ExecuteInsertSingleStringAsync(string query, object? parameters)
         {
             string? response = null;
@@ -41,6 +41,31 @@ namespace APIBingo.Services
                 try
                 {
                     int data = await cnn.ExecuteAsync(query, parameters, trn);
+                    response = data.ToString();
+                    trn.Commit();
+                }
+                catch (Exception)
+                {
+                    trn.Rollback();
+                }
+                finally
+                {
+                    cnn.Close();
+                }
+            }
+            return response;
+        }
+        public async Task<string?> ExecuteInsertSingleAndGetIdAsync(string query, object? parameters)
+        {
+            string? response = null;
+
+            using (IDbConnection cnn = _connectionFactory.CreateConnection())
+            {
+                cnn.Open();
+                var trn = cnn.BeginTransaction();
+                try
+                {
+                    int data = await cnn.QuerySingleAsync<int>(query, parameters, trn);
                     response = data.ToString();
                     trn.Commit();
                 }
