@@ -125,7 +125,7 @@ namespace APIBingo.Rules
                                     Email = oUser.Email,
                                     Password = oUser.Password
                                 };
-                                ResultResponse<TokenModel> auth = await new AuthRules(_iConfiguration, _connectionFactory).Authentication(oAuthReq);
+                                ResultResponse<AuthToResponse> auth = await new AuthRules(_iConfiguration, _connectionFactory).Authentication(oAuthReq);
 
                                 response.Message = auth.Data?.Token;
                                 response.Success = true;

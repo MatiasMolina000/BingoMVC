@@ -23,20 +23,20 @@ namespace APIBingo.Rules
         } 
 
 
-        public async Task<ResultResponse<TokenModel>> Authentication(AuthRequest oAuthReq)
+        public async Task<ResultResponse<AuthToResponse>> Authentication(AuthRequest oAuthReq)
         {
-            ResultResponse<TokenModel> response = new() { Message = "Access denied." };
-            string token = "";
+            ResultResponse<AuthToResponse> response = new() { Message = "Access denied." };
 
             UserModel? auth = await new AuthData(_connectionFactory).Authentication(oAuthReq);
 
             if (auth != null) 
             { 
-                token = GetToken(auth, _iConfiguration);
+                string token = GetToken(auth, _iConfiguration);
                 response.Success = true;
                 response.Message = "Authentication successfull.";
+                
+                response.Data = new AuthToResponse(token, auth);
             }
-            response.Data = new TokenModel(){ Token = token };
 
             return response;
         }
