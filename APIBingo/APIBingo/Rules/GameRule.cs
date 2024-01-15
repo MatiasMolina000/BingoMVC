@@ -9,10 +9,8 @@ namespace APIBingo.Rules
     {
         private readonly IDBFactoryConnection _connectionFactory;
 
-        public GameRule(IDBFactoryConnection connectionFactory)
-        {
-            _connectionFactory = connectionFactory;
-        }
+
+        public GameRule(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
         public async Task<ResultResponse<GameModel>> New(int userId) 
@@ -20,36 +18,45 @@ namespace APIBingo.Rules
             ResultResponse<GameModel> response = new();
 
             UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
-
             if (oUser == null)
             {
                 response.Message = "Unauthorized.";
+                return response;
             }
-            else 
-            { 
-                GameModel game = new(oUser);
-                string? data = await new GameData(_connectionFactory).NewGame(game);
-                if (data == null)
-                {
-                    response.Message = "An error ocurred while saving game.";
-                }
-                else 
-                {
-                    game.Id = int.Parse(data);
-                    game.OBingoCards.ForEach(iBingoCard => iBingoCard.GameId = game.Id);
 
-                    data = await new GameData(_connectionFactory).NewGameBingoCards(game.OBingoCards);
-                    if (data == null)
-                    {
-                        response.Message = "An error ocurred while saving the bingo cards.";
-                    }
-                    else 
-                    {
-                        response.Success = true;
-                        response.Data = game;
-                    }
-                }
+            GameModel oGame = new(oUser);
+            string? data = await new GameData(_connectionFactory).NewGame(oGame);
+            if (data == null)
+            {
+                response.Message = "An error ocurred while saving game.";
+                return response;
             }
+            oGame.Id = int.Parse(data);
+            
+            oGame.OBingoCards.ForEach(iBingoCard => iBingoCard.GameId = oGame.Id);
+            data = await new GameData(_connectionFactory).NewGameBingoCards(oGame.OBingoCards);
+            if (data == null)
+            {
+                response.Message = "An error ocurred while saving the bingo cards.";
+                return response;
+            }
+
+            List<BingoCardModel> listOBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame);
+            foreach (var bingoCard in oGame.OBingoCards)
+            {
+                var matchBingoCard = listOBingoCards.FirstOrDefault(bingoCardOfList => bingoCardOfList.Card == bingoCard.Card);
+                if (matchBingoCard != null)
+                    bingoCard.Id = matchBingoCard.Id;
+            }
+            data = await new GameData(_connectionFactory).NewGameBingoCardNumbers(oGame.OBingoCards);
+            if (data == null)
+            {
+                response.Message = "An error ocurred while saving the bingo cards.";
+                return response;
+            }
+
+            response.Success = true;
+            response.Data = oGame;
             return response;
         }
     }

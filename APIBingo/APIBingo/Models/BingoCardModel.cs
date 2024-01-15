@@ -16,12 +16,18 @@
         public string OrderedN { get; set; }
         public bool Completed { get; set; }
 
+        public List<BingoCardNumberModel> OBingoCardNumbers { get; set; }
+
+
+        public BingoCardModel() { }
+
         public BingoCardModel(int bingoCardNumber)
         {
             Card = bingoCardNumber;
             Completed = false;
             Numbers = string.Empty;
             OrderedN = string.Empty;
+            OBingoCardNumbers = new List<BingoCardNumberModel>();
 
             int[,] card = new int[_maxRows, _maxColumns];
 
@@ -36,6 +42,9 @@
 
             //I assign random numbers to the matrix representing the bingo cards.
             BuildMatrix(card);
+
+            //I assign numbers to the bingo cards numbers list.
+            GetBingoCardNumbersFromNumbers(Numbers);
         }
 
         public void RedefineNumbers()
@@ -277,6 +286,19 @@
                 }
             }
             return numbers;
+        }
+
+        private void GetBingoCardNumbersFromNumbers(string numbers)
+        {
+            string[] numbersArray = numbers.Split(',');
+            for (int n = 0; n < numbersArray.Length; n++)
+            {
+                var bingoCardNumber = new BingoCardNumberModel()
+                {
+                    Number = int.Parse(numbersArray[n])
+                };
+                OBingoCardNumbers.Add(bingoCardNumber);
+            }
         }
     }
 }
