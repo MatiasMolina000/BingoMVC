@@ -88,22 +88,29 @@
         {
             int currentCell;
             int previousCell = 0;
+            var columsWithTwoEmptyCells = new int[] { -1, -1, -1 };
             int numberLap;
             int[] blankCellsByColumns = new int[_maxColumns];
             Random random = new();
             for (int i = 0; i < 3; i++)
             {
-                do
+                while (true)
                 {
                     currentCell = random.Next(0, _maxColumns - 1);
 
                     if (currentCell == previousCell + 1)
                     {
-                        numberLap = random.Next(0, 1);
+                        numberLap = random.Next(0, 2);
                         if (numberLap == 1)
                             currentCell = previousCell;
                     }
-                } while (currentCell == previousCell);
+
+                    if (Array.IndexOf(columsWithTwoEmptyCells, currentCell) == -1)
+                    {
+                        columsWithTwoEmptyCells[i] = currentCell;
+                        break;
+                    }
+                };
 
                 blankCellsByColumns[currentCell] = 2;
                 previousCell = currentCell;
