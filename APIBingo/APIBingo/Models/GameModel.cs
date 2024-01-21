@@ -33,6 +33,25 @@
         }
 
 
+        public void DropNewBall()
+        {
+            BingoCageModel oBingoCage = new();
+            if (OBingoCages == null || !OBingoCages.Any())
+            {
+                oBingoCage.CreateNewBall(this);
+            }
+            else
+            {
+                while (true)
+                {
+                    oBingoCage.CreateNewBall(this);
+                    if (!OBingoCages.Any(item => item.Number == oBingoCage.Number))
+                        break;
+                }
+            }
+            OBingoCages.Add(oBingoCage);
+        }
+
         private void CreateBingoCards() 
         {
             OBingoCards = new List<BingoCardModel>();

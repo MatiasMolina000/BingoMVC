@@ -3,7 +3,7 @@
     public class BingoCageModel
     {
         private static readonly int s_MinNumber = 1;
-        private static readonly int s_MaxNumber = 90;
+        private static readonly int s_MaxNumber = 91;
 
         public long Id { get; set; }
         public int GameId { get; set; }

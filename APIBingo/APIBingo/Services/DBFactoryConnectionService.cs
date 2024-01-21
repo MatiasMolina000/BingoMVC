@@ -64,6 +64,7 @@ namespace APIBingo.Services
             }
             return response;
         }
+        //Execute and return the last Id generated
         public async Task<string?> ExecuteInsertSingleAndGetIdAsync(string query, object? parameters)
         {
             string? response = null;
