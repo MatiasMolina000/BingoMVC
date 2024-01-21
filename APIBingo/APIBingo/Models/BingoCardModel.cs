@@ -16,12 +16,18 @@
         public string OrderedN { get; set; }
         public bool Completed { get; set; }
 
+        public List<BingoCardNumberModel> OBingoCardNumbers { get; set; }
+
+
+        public BingoCardModel() { }
+
         public BingoCardModel(int bingoCardNumber)
         {
             Card = bingoCardNumber;
             Completed = false;
             Numbers = string.Empty;
             OrderedN = string.Empty;
+            OBingoCardNumbers = new List<BingoCardNumberModel>();
 
             int[,] card = new int[_maxRows, _maxColumns];
 
@@ -36,6 +42,9 @@
 
             //I assign random numbers to the matrix representing the bingo cards.
             BuildMatrix(card);
+
+            //I assign numbers to the bingo cards numbers list.
+            GetBingoCardNumbersFromNumbers(Numbers);
         }
 
         public void RedefineNumbers()
@@ -79,22 +88,29 @@
         {
             int currentCell;
             int previousCell = 0;
+            var columsWithTwoEmptyCells = new int[] { -1, -1, -1 };
             int numberLap;
             int[] blankCellsByColumns = new int[_maxColumns];
             Random random = new();
             for (int i = 0; i < 3; i++)
             {
-                do
+                while (true)
                 {
                     currentCell = random.Next(0, _maxColumns - 1);
 
                     if (currentCell == previousCell + 1)
                     {
-                        numberLap = random.Next(0, 1);
+                        numberLap = random.Next(0, 2);
                         if (numberLap == 1)
                             currentCell = previousCell;
                     }
-                } while (currentCell == previousCell);
+
+                    if (Array.IndexOf(columsWithTwoEmptyCells, currentCell) == -1)
+                    {
+                        columsWithTwoEmptyCells[i] = currentCell;
+                        break;
+                    }
+                };
 
                 blankCellsByColumns[currentCell] = 2;
                 previousCell = currentCell;
@@ -277,6 +293,19 @@
                 }
             }
             return numbers;
+        }
+
+        private void GetBingoCardNumbersFromNumbers(string numbers)
+        {
+            string[] numbersArray = numbers.Split(',');
+            for (int n = 0; n < numbersArray.Length; n++)
+            {
+                var bingoCardNumber = new BingoCardNumberModel()
+                {
+                    Number = int.Parse(numbersArray[n])
+                };
+                OBingoCardNumbers.Add(bingoCardNumber);
+            }
         }
     }
 }

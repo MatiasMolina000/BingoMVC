@@ -15,9 +15,9 @@ namespace APIBingo.Datas
         public async Task<string?> NewGame(GameModel oModel)
         {
             var query = "INSERT INTO Games " +
-                           "(UserId, StatusId, Start, Status) " +
-                           "VALUES (@UserId, @StatusId, @Start, @Status); " +
-                           "SELECT SCOPE_IDENTITY();";
+                        "(UserId, StatusId, Start, Status) " +
+                        "VALUES (@UserId, @StatusId, @Start, @Status); " +
+                        "SELECT SCOPE_IDENTITY();";
 
             string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleAndGetIdAsync(query, oModel);
             if (data == null || data == "0")
@@ -33,6 +33,26 @@ namespace APIBingo.Datas
             foreach (BingoCardModel iModel in listOModel)
             { 
                 query += $"({iModel.GameId}, {iModel.Card}, '{iModel.Numbers}', '{iModel.OrderedN}', 0), ";
+            }
+            query = query[..^2] + ";";
+
+            string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleStringAsync(query, null);
+            if (data == null || data == "0")
+                return null;
+            return data;
+        }
+
+        public async Task<string?> NewGameBingoCardNumbers(List<BingoCardModel> listOBingoCards)
+        {
+            var query = "INSERT INTO BingoCardNumbers " +
+                           "(BingoCardId, Number, Called) " +
+                           "VALUES ";
+            foreach (BingoCardModel oBingoCard in listOBingoCards)
+            {
+                foreach (BingoCardNumberModel oBingoCardNumber in oBingoCard.OBingoCardNumbers)
+                {
+                    query += $"({oBingoCard.Id}, {oBingoCardNumber.Number}, 0), ";
+                }
             }
             query = query[..^2] + ";";
 

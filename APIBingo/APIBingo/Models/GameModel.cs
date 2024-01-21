@@ -11,10 +11,13 @@
         public DateTime Start { get; set; }
         public DateTime? End { get; set; }
         public short Status { get; set; }
+
         public UserModel OUser { get; set; }
         public List<BingoCageModel> OBingoCages { get; set; }
         public List<BingoCardModel> OBingoCards { get; set; }
 
+        
+        public GameModel() { }
 
         public GameModel(UserModel oUserModel)
         {
@@ -22,10 +25,17 @@
             StatusId = 1;
             Start = DateTime.Now;
             Status = 0;
+            
             OUser = oUserModel;
             OBingoCages = new List<BingoCageModel>();
-            OBingoCards = new List<BingoCardModel>();
 
+            CreateBingoCards();
+        }
+
+
+        private void CreateBingoCards() 
+        {
+            OBingoCards = new List<BingoCardModel>();
             for (int i = 1; i <= _numbersOfBingoCards; i++)
             {
                 BingoCardModel bingoCard = new(i);

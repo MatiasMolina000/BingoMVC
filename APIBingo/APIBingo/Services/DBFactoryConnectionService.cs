@@ -29,6 +29,15 @@ namespace APIBingo.Services
             }
         }
 
+        //Return a list of elements. It doesn't matters the object/data type.
+        public async Task<IEnumerable<T>> ExecuteGetListObjectAsync<T>(string query, object? parameters)
+        {
+            using IDbConnection cnn = _connectionFactory.CreateConnection();
+            IEnumerable<T> data = await cnn.QueryAsync<T>(query, parameters);
+            cnn.Close();
+            return data;
+        }
+
         //Execute and return number of rows afected
         public async Task<string?> ExecuteInsertSingleStringAsync(string query, object? parameters)
         {
