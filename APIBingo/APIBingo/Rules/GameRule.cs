@@ -24,7 +24,14 @@ namespace APIBingo.Rules
                 return response;
             }
 
-            GameModel oGame = new(oUser);
+            GameModel? oGame = await new GameData(_connectionFactory).GetActiveByUserId(userId);
+            if (oGame != null)
+            {
+                response.Message = "There is a pending game.";
+                return response;
+            }
+
+            oGame = new(oUser);
             string? data = await new GameData(_connectionFactory).NewGame(oGame);
             if (data == null)
             {
