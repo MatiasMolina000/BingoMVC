@@ -210,5 +210,36 @@ namespace APIBingo.Rules
             response.Data = oGame;
             return response;
         }
+
+        public async Task<ResultResponse<GameModel>> Close(int userId)
+        {
+            ResultResponse<GameModel> response = new();
+
+            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
+            if (oUser == null)
+            {
+                response.Message = "Unauthorized.";
+                return response;
+            }
+
+            GameModel? oGame = await new GameData(_connectionFactory).GetActiveByUserId(userId);
+            if (oGame == null)
+            {
+                response.Message = "There is no game to close.";
+                return response;
+            }
+
+            string? data = await new GameData(_connectionFactory).CloseTheGame(oGame.Id);
+            if (data == null)
+            {
+                response.Message = "An error ocurred while closed the bingo game.";
+                return response;
+            }
+
+            response.Message = "Now, there is no game to load.";
+            response.Success = true;
+            response.Data = null;
+            return response;
+        }
     }
 }

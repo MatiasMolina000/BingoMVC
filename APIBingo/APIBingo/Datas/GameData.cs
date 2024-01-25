@@ -87,5 +87,15 @@ namespace APIBingo.Datas
             GameModel? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetSingleObjectAsync<GameModel>(query, new { usreId });
             return data;
         }
+
+        public async Task<string?> CloseTheGame(int gameId)
+        {
+            var query = "UPDATE Games SET StatusId = 3, [End] = GETDATE(), [Status] = 1 WHERE Id = @gameId;";
+
+            string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleStringAsync(query, new { gameId });
+            if (data == null || data == "0")
+                return null;
+            return data;
+        }
     }
 }

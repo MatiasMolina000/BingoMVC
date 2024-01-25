@@ -61,5 +61,19 @@ namespace APIBingo.Controllers
             }
             return new ResultResponse<GameModel>() { Message = "Unauthorized." };
         }
+
+        [HttpPatch("Close")]
+        public async Task<ResultResponse<GameModel>> Close()
+        {
+            GetAuthenticationService getAuth = new(HttpContext);
+            var authId = getAuth.GetId();
+
+            if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId))
+            {
+                ResultResponse<GameModel> rule = await new GameRule(_connectionFactory).Close(userId);
+                return rule;
+            }
+            return new ResultResponse<GameModel>() { Message = "Unauthorized." };
+        }
     }
 }
