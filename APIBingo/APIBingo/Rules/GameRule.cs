@@ -175,5 +175,40 @@ namespace APIBingo.Rules
             response.Success = true;
             return response;
         }
+
+        public async Task<ResultResponse<GameModel>> Load(int userId) 
+        {
+            ResultResponse<GameModel> response = new();
+
+            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
+            if (oUser == null)
+            {
+                response.Message = "Unauthorized.";
+                return response;
+            }
+
+            GameModel? oGame = await new GameData(_connectionFactory).GetActiveByUserId(userId);
+            if (oGame == null)
+            {
+                response.Message = "There is no game to load.";
+                return response;
+            }
+
+            oGame.OUser = oUser;
+
+            List<BingoCageModel>? oBingoCage = await new BingoCageData(_connectionFactory).GetListByGameId(oGame);
+            oGame.OBingoCages = oBingoCage ?? new List<BingoCageModel>();
+            List<BingoCardModel> oBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame);
+            oGame.OBingoCards = oBingoCards ?? new List<BingoCardModel>();
+            foreach (BingoCardModel bingoCardModel in oGame.OBingoCards)
+            {
+                List<BingoCardNumberModel> oBingoCardNumber = await new BingoCardNumberData(_connectionFactory).GetListByBingoCardId(bingoCardModel);
+                bingoCardModel.OBingoCardNumbers = oBingoCardNumber;
+            }
+
+            response.Success = true;
+            response.Data = oGame;
+            return response;
+        }
     }
 }

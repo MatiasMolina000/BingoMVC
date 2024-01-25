@@ -79,5 +79,13 @@ namespace APIBingo.Datas
                 return null;
             return data;
         }
+
+        public async Task<GameModel?> GetActiveByUserId(int usreId)
+        {
+            var query = "SELECT * FROM Games WITH(NOLOCK) WHERE UserId = @usreId AND StatusId = 1 AND [Status] = 0;";
+
+            GameModel? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetSingleObjectAsync<GameModel>(query, new { usreId });
+            return data;
+        }
     }
 }

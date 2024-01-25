@@ -34,7 +34,7 @@ namespace APIBingo.Controllers
             return new ResultResponse<GameModel>() { Message = "Unauthorized." };
         }
 
-        [HttpPost("DropBall")]
+        [HttpPut("DropBall")]
         public async Task<ResultResponse<BingoCageModel>> DropBall(int gameId)
         {
             GetAuthenticationService getAuth = new(HttpContext);
@@ -46,6 +46,20 @@ namespace APIBingo.Controllers
                 return rule;
             }
             return new ResultResponse<BingoCageModel>() { Message = "Unauthorized." };
+        }
+
+        [HttpGet("Load")]
+        public async Task<ResultResponse<GameModel>> Load() 
+        {
+            GetAuthenticationService getAuth = new(HttpContext);
+            var authId = getAuth.GetId();
+
+            if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId))
+            {
+                ResultResponse<GameModel> rule = await new GameRule(_connectionFactory).Load(userId);
+                return rule;
+            }
+            return new ResultResponse<GameModel>() { Message = "Unauthorized." };
         }
     }
 }
