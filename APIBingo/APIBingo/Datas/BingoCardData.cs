@@ -1,7 +1,6 @@
 ﻿using APIBingo.Models;
 using APIBingo.Services.Connection;
 using APIBingo.Services;
-
 namespace APIBingo.Datas
 {
     public class BingoCardData
@@ -12,13 +11,14 @@ namespace APIBingo.Datas
         public BingoCardData(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<List<BingoCardModel>> GetListByGameId(GameModel oModel)
+        public async Task<List<BingoCardModel>> GetListByGameId(int gameId)
         {
-            var query = "SELECT * FROM BingoCards WITH(NOLOCK) WHERE GameId = @Id;";
+            var query = "SELECT * FROM BingoCards WITH(NOLOCK) WHERE GameId = @gameId;";
 
-            IEnumerable<BingoCardModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCardModel>(query, oModel);
+            IEnumerable<BingoCardModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCardModel>(query, new { gameId });
             return data.ToList();
         }
+
         public async Task<string?> MatchNumberCalled(int gameId, int numberBall)
         {
             var query = "UPDATE BingoCardNumbers SET Called = 1 " +

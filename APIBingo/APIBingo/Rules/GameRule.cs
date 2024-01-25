@@ -1,5 +1,6 @@
 ﻿using APIBingo.Datas;
 using APIBingo.Models;
+using APIBingo.Models.DataTransferObject;
 using APIBingo.Models.Response;
 using APIBingo.Services.Connection;
 
@@ -13,14 +14,14 @@ namespace APIBingo.Rules
         public GameRule(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<ResultResponse<GameModel>> New(int userId) 
+        public async Task<ResultResponse<BingoGameDataTransferObject>> New(int userId)
         {
-            ResultResponse<GameModel> response = new();
+            ResultResponse<BingoGameDataTransferObject> response = new();
 
-            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
-            if (oUser == null)
+            string? checkUserById = await CheckUserById(userId);
+            if (!string.IsNullOrEmpty(checkUserById))
             {
-                response.Message = "Unauthorized.";
+                response.Message = checkUserById;
                 return response;
             }
 
@@ -31,15 +32,15 @@ namespace APIBingo.Rules
                 return response;
             }
 
-            oGame = new(oUser);
+            oGame = new(userId);
             string? data = await new GameData(_connectionFactory).NewGame(oGame);
             if (data == null)
             {
                 response.Message = "An error ocurred while saving game.";
                 return response;
             }
+
             oGame.Id = int.Parse(data);
-            
             oGame.OBingoCards.ForEach(iBingoCard => iBingoCard.GameId = oGame.Id);
             data = await new GameData(_connectionFactory).NewGameBingoCards(oGame.OBingoCards);
             if (data == null)
@@ -48,7 +49,7 @@ namespace APIBingo.Rules
                 return response;
             }
 
-            List<BingoCardModel> listOBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame);
+            List<BingoCardModel> listOBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame.Id);
             foreach (var bingoCard in oGame.OBingoCards)
             {
                 var matchBingoCard = listOBingoCards.FirstOrDefault(bingoCardOfList => bingoCardOfList.Card == bingoCard.Card);
@@ -62,14 +63,24 @@ namespace APIBingo.Rules
                 return response;
             }
 
+            BingoGameDataTransferObject oBingoGameDTO = await BuildBingoGameDTO(oGame);
+
             response.Success = true;
-            response.Data = oGame;
+            response.Data = oBingoGameDTO;
             return response;
         }
 
-        public async Task<ResultResponse<BingoCageModel>> DropBall(int userId, int gameId)
+        public async Task<ResultResponse<BingoCageDataTransferObject>> DropBall(int userId, int gameId)
         {
-            ResultResponse<BingoCageModel> response = new();
+            ResultResponse<BingoCageDataTransferObject> response = new();
+
+            // User existence and active status check.
+            string? checkUserById = await CheckUserById(userId);
+            if (!string.IsNullOrEmpty(checkUserById))
+            {
+                response.Message = checkUserById;
+                return response;
+            }
 
             GameModel? oGame = await new GameData(_connectionFactory).GetById(gameId);
             if (oGame == null)
@@ -82,15 +93,15 @@ namespace APIBingo.Rules
                 response.Message = "Invalid data.";
                 return response;
             }
-            if (oGame.StatusId != 0)
+            if (oGame.StatusId != 1)
             {
                 response.Message = "The game is not available.";
                 return response;
             }
 
-            List<BingoCageModel>? oBingoCage = await new BingoCageData(_connectionFactory).GetListByGameId(oGame);
+            List<BingoCageModel>? oBingoCage = await new BingoCageData(_connectionFactory).GetListByGameId(oGame.Id);
             oGame.OBingoCages = oBingoCage ?? new List<BingoCageModel>();
-            List<BingoCardModel> oBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame);
+            List<BingoCardModel> oBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame.Id);
             oGame.OBingoCards = oBingoCards ?? new List<BingoCardModel>();
             foreach (BingoCardModel bingoCardModel in oGame.OBingoCards)
             {
@@ -108,7 +119,7 @@ namespace APIBingo.Rules
             }
 
             var matchNumberCalled = false;
-            foreach (BingoCardModel bingoCardModel in oGame.OBingoCards) 
+            foreach (BingoCardModel bingoCardModel in oGame.OBingoCards)
             {
                 if (bingoCardModel.OBingoCardNumbers.FirstOrDefault(bingoCardNumber => bingoCardNumber.Number == oBall.Number) != null)
                 {
@@ -117,7 +128,7 @@ namespace APIBingo.Rules
                 }
             }
             string? matchCardNumbers = null;
-            if (matchNumberCalled) 
+            if (matchNumberCalled)
             {
                 oGame.OBingoCards.ForEach(oBingoCard =>
                 {
@@ -126,7 +137,7 @@ namespace APIBingo.Rules
                         .ToList()
                         .ForEach(oBingoCardNumber => oBingoCardNumber.Called = true);
                 });
-                    
+
                 matchCardNumbers = await new BingoCardData(_connectionFactory).MatchNumberCalled(oGame.Id, oBall.Number);
                 if (string.IsNullOrEmpty(matchCardNumbers))
                 {
@@ -137,20 +148,23 @@ namespace APIBingo.Rules
 
             oBall.Id = int.Parse(ballId);
 
+            var oBingoCageDTO = new BingoCageDataTransferObject();
+            oBingoCageDTO.FillDTOFromModel(oBall);
+
             if (oGame.OBingoCages.Count > 14)
             {
                 var winners = new List<BingoCardModel>();
-                foreach (BingoCardModel bingoCard in oGame.OBingoCards) 
+                foreach (BingoCardModel bingoCard in oGame.OBingoCards)
                 {
                     var matchs = 0;
                     matchs = bingoCard.OBingoCardNumbers.Count(bingoCardNumber => bingoCardNumber.Called == true);
-                    if (matchs == 15) 
+                    if (matchs == 15)
                     {
                         BingoCardModel winner = oGame.OBingoCards.First(winnerBingoCard => winnerBingoCard.Id == bingoCard.Id);
                         winners.Add(winner);
                     }
                 }
-                if (winners.Any()) 
+                if (winners.Any())
                 {
                     string? data = await new GameData(_connectionFactory).FinishTheGame(oGame.Id);
                     data = await new BingoCardData(_connectionFactory).FinishTheGameCard(winners);
@@ -171,26 +185,27 @@ namespace APIBingo.Rules
                         concatenatedNumbers = concatenatedNumbers[..^2];
                         response.Message = $"Bingo cards winners: {concatenatedNumbers}.";
                     }
-                    response.Data = oBall;
+
+                    response.Data = oBingoCageDTO;
                     response.Success = true;
                     return response;
                 }
             }
 
-            response.Message = $"Called ball: {oBall.Number}";
-            response.Data = oBall;
+            response.Message = $"Called ball: {oBingoCageDTO.Number}";
+            response.Data = oBingoCageDTO;
             response.Success = true;
             return response;
         }
 
-        public async Task<ResultResponse<GameModel>> Load(int userId) 
+        public async Task<ResultResponse<BingoGameDataTransferObject>> Load(int userId)
         {
-            ResultResponse<GameModel> response = new();
+            ResultResponse<BingoGameDataTransferObject> response = new();
 
-            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
-            if (oUser == null)
+            string? checkUserById = await CheckUserById(userId);
+            if (!string.IsNullOrEmpty(checkUserById))
             {
-                response.Message = "Unauthorized.";
+                response.Message = checkUserById;
                 return response;
             }
 
@@ -201,31 +216,24 @@ namespace APIBingo.Rules
                 return response;
             }
 
-            oGame.OUser = oUser;
-
-            List<BingoCageModel>? oBingoCage = await new BingoCageData(_connectionFactory).GetListByGameId(oGame);
-            oGame.OBingoCages = oBingoCage ?? new List<BingoCageModel>();
-            List<BingoCardModel> oBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oGame);
-            oGame.OBingoCards = oBingoCards ?? new List<BingoCardModel>();
-            foreach (BingoCardModel bingoCardModel in oGame.OBingoCards)
-            {
-                List<BingoCardNumberModel> oBingoCardNumber = await new BingoCardNumberData(_connectionFactory).GetListByBingoCardId(bingoCardModel);
-                bingoCardModel.OBingoCardNumbers = oBingoCardNumber;
-            }
+            BingoGameDataTransferObject oBingoGameDTO = await BuildBingoGameDTO(oGame);
 
             response.Success = true;
-            response.Data = oGame;
+            response.Data = oBingoGameDTO;
             return response;
         }
 
-        public async Task<ResultResponse<GameModel>> Close(int userId)
+        public async Task<ResultResponse<BingoGameDataTransferObject>> Close(int userId)
         {
-            ResultResponse<GameModel> response = new();
-
-            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
-            if (oUser == null)
+            ResultResponse<BingoGameDataTransferObject> response = new()
             {
-                response.Message = "Unauthorized.";
+                Data = null
+            };
+
+            string? checkUserById = await CheckUserById(userId);
+            if (!string.IsNullOrEmpty(checkUserById))
+            {
+                response.Message = checkUserById;
                 return response;
             }
 
@@ -237,7 +245,7 @@ namespace APIBingo.Rules
             }
 
             string? data = await new GameData(_connectionFactory).CloseTheGame(oGame.Id);
-            if (data == null)
+            if (string.IsNullOrEmpty(data))
             {
                 response.Message = "An error ocurred while closed the bingo game.";
                 return response;
@@ -245,8 +253,34 @@ namespace APIBingo.Rules
 
             response.Message = "Now, there is no game to load.";
             response.Success = true;
-            response.Data = null;
             return response;
+        }
+
+
+        private async Task<string?> CheckUserById(int userId)
+        {
+            UserModel? oUser = await new UserData(_connectionFactory).GetById(userId.ToString());
+            if (oUser == null)
+                return "Invalid User Id.";
+            if (oUser.StatusId == 2)
+                return "User not available.";
+            if (oUser.StatusId == 3)
+                return "Email address pending validation.";
+            return null;
+        }
+
+        private async Task<BingoGameDataTransferObject> BuildBingoGameDTO(GameModel oGame)
+        {
+            var oBingoGameDTO = new BingoGameDataTransferObject(oGame);
+
+            List<BingoCageModel>? oBingoCage = await new BingoCageData(_connectionFactory).GetListByGameId(oBingoGameDTO.Id);
+            if (oBingoCage != null)
+                oBingoGameDTO.FillListBingoCages(oBingoCage);
+
+            List<BingoCardModel> oBingoCards = await new BingoCardData(_connectionFactory).GetListByGameId(oBingoGameDTO.Id);
+            oBingoGameDTO.FillListBingoCards(oBingoCards);
+
+            return oBingoGameDTO;
         }
     }
 }

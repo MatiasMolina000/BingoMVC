@@ -1,4 +1,4 @@
-﻿using APIBingo.Models;
+﻿using APIBingo.Models.DataTransferObject;
 using APIBingo.Models.Response;
 using APIBingo.Rules;
 using APIBingo.Services;
@@ -21,59 +21,59 @@ namespace APIBingo.Controllers
         }
 
         [HttpPost("New")]
-        public async Task<ResultResponse<GameModel>> New()
+        public async Task<ResultResponse<BingoGameDataTransferObject>> New()
         {
             GetAuthenticationService getAuth = new(HttpContext);
             var authId = getAuth.GetId();
 
             if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId)) 
             { 
-                ResultResponse<GameModel> rule = await new GameRule(_connectionFactory).New(userId);
+                ResultResponse<BingoGameDataTransferObject> rule = await new GameRule(_connectionFactory).New(userId);
                 return rule;
             }
-            return new ResultResponse<GameModel>() { Message = "Unauthorized." };
+            return new ResultResponse<BingoGameDataTransferObject>() { Message = "Unauthorized." };
         }
 
         [HttpPut("DropBall")]
-        public async Task<ResultResponse<BingoCageModel>> DropBall(int gameId)
+        public async Task<ResultResponse<BingoCageDataTransferObject>> DropBall(int gameId)
         {
             GetAuthenticationService getAuth = new(HttpContext);
             var authId = getAuth.GetId();
 
             if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId))
             {
-                ResultResponse<BingoCageModel> rule = await new GameRule(_connectionFactory).DropBall(userId, gameId);
+                ResultResponse<BingoCageDataTransferObject> rule = await new GameRule(_connectionFactory).DropBall(userId, gameId);
                 return rule;
             }
-            return new ResultResponse<BingoCageModel>() { Message = "Unauthorized." };
+            return new ResultResponse<BingoCageDataTransferObject>() { Message = "Unauthorized." };
         }
 
         [HttpGet("Load")]
-        public async Task<ResultResponse<GameModel>> Load() 
+        public async Task<ResultResponse<BingoGameDataTransferObject>> Load() 
         {
             GetAuthenticationService getAuth = new(HttpContext);
             var authId = getAuth.GetId();
 
             if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId))
             {
-                ResultResponse<GameModel> rule = await new GameRule(_connectionFactory).Load(userId);
+                ResultResponse<BingoGameDataTransferObject> rule = await new GameRule(_connectionFactory).Load(userId);
                 return rule;
             }
-            return new ResultResponse<GameModel>() { Message = "Unauthorized." };
+            return new ResultResponse<BingoGameDataTransferObject>() { Message = "Unauthorized." };
         }
 
         [HttpPatch("Close")]
-        public async Task<ResultResponse<GameModel>> Close()
+        public async Task<ResultResponse<BingoGameDataTransferObject>> Close()
         {
             GetAuthenticationService getAuth = new(HttpContext);
             var authId = getAuth.GetId();
 
             if (!string.IsNullOrEmpty(authId) && int.TryParse(authId, out int userId))
             {
-                ResultResponse<GameModel> rule = await new GameRule(_connectionFactory).Close(userId);
+                ResultResponse<BingoGameDataTransferObject> rule = await new GameRule(_connectionFactory).Close(userId);
                 return rule;
             }
-            return new ResultResponse<GameModel>() { Message = "Unauthorized." };
+            return new ResultResponse<BingoGameDataTransferObject>() { Message = "Unauthorized." };
         }
     }
 }

@@ -12,11 +12,11 @@ namespace APIBingo.Datas
         public BingoCageData(IDBFactoryConnection connectionFactory) => _connectionFactory = connectionFactory;
 
 
-        public async Task<List<BingoCageModel>?> GetListByGameId(GameModel oModel)
+        public async Task<List<BingoCageModel>?> GetListByGameId(int gameId)
         {
-            var query = "SELECT * FROM BingoCages WITH(NOLOCK) WHERE GameId = @Id;";
+            var query = "SELECT * FROM BingoCages WITH(NOLOCK) WHERE GameId = @gameId;";
 
-            IEnumerable<BingoCageModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCageModel>(query, oModel);
+            IEnumerable<BingoCageModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCageModel>(query, new { gameId });
             return data.ToList();
         }
 
