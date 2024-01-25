@@ -12,18 +12,25 @@ namespace APIBingo.Services
         { 
             _httpContext = httpContext;
             if (!new GetAuthentication(_httpContext).ValidateAuthentication())
+            { 
                 s_authenticated = true;
+            }
         }
         
 
         public string? GetId()
         {
-            if (s_authenticated)
+            if (s_authenticated) 
+            {
                 return null;
+            }
 
             var claim = "";
-            if (int.TryParse(_httpContext.User.FindFirstValue("nameid"), out int id))
+            if (int.TryParse(_httpContext.User.FindFirstValue("nameid"), out int id)) 
+            { 
                 claim = id.ToString();
+            }
+            
             return claim;
         }
 
@@ -31,27 +38,36 @@ namespace APIBingo.Services
         public string? GetEmail()
         {
             if (s_authenticated)
+            { 
                 return null;
+            }
 
             string claim = _httpContext.User.FindFirst(ClaimTypes.Email)?.Value ?? "";
+            
             return claim;
         }
 
         public string? GetPassword()
         {
             if (s_authenticated)
+            {
                 return null;
+            }
 
             string claim = _httpContext.User.FindFirstValue("password") ?? "";
+            
             return claim;
         }
 
         public string? GetUser()
         {
             if (s_authenticated)
+            { 
                 return null;
+            }
 
             string claim = _httpContext.User.Identity?.Name ?? "";
+            
             return claim;
         }
     }

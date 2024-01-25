@@ -13,9 +13,12 @@ namespace APIBingo.Datas
 
         public async Task<List<BingoCardModel>> GetListByGameId(int gameId)
         {
-            var query = "SELECT * FROM BingoCards WITH(NOLOCK) WHERE GameId = @gameId;";
+            var query = "SELECT * FROM BingoCards WITH(NOLOCK) " +
+                "WHERE GameId = @gameId;";
 
-            IEnumerable<BingoCardModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCardModel>(query, new { gameId });
+            IEnumerable<BingoCardModel> data = await new DBFactoryConnectionService(_connectionFactory)
+                .ExecuteGetListObjectAsync<BingoCardModel>(query, new { gameId });
+
             return data.ToList();
         }
 
@@ -26,9 +29,14 @@ namespace APIBingo.Datas
                 "INNER JOIN BingoCards bc ON bcn.BingoCardId = bc.Id " +
                 "WHERE bc.GameId = @gameId AND bcn.Number = @numberBall; ";
 
-            string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleStringAsync(query, new { gameId, numberBall });
+            string? data = await new DBFactoryConnectionService(_connectionFactory)
+                .ExecuteInsertSingleStringAsync(query, new { gameId, numberBall });
+
             if (data == null || data == "0")
+            {
                 return null;
+            }
+
             return data;
         }
 
@@ -39,12 +47,18 @@ namespace APIBingo.Datas
             {
                 concatenatedNumbers += $"{oBingoCardModel.Id}, ";
             }
-            concatenatedNumbers = concatenatedNumbers[..^2];
-            var query = $"UPDATE BingoCards SET Completed = 1 WHERE Id IN ({concatenatedNumbers})";
 
-            string? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteInsertSingleStringAsync(query, null);
+            concatenatedNumbers = concatenatedNumbers[..^2];
+            var query = $"UPDATE BingoCards SET Completed = 1 WHERE Id IN ({concatenatedNumbers});";
+
+            string? data = await new DBFactoryConnectionService(_connectionFactory)
+                .ExecuteInsertSingleStringAsync(query, null);
+
             if (data == null || data == "0")
+            { 
                 return null;
+            }
+            
             return data;
         }
     }

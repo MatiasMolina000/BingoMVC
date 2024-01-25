@@ -22,19 +22,24 @@ namespace APIBingo.Services.Notification
 
         public MailMessage CreateMessage()
         {
-            return new MailMessage()
-            { 
+            var mailMessage = new MailMessage()
+            {
                 From = new MailAddress(_smtpAddress, _smtppUsername)
             };
+
+            return mailMessage;
         }
 
-        public SmtpClient CreateClient() {
-            return new SmtpClient(_smtpServer)
+        public SmtpClient CreateClient()
+        {
+            var smtpClient = new SmtpClient(_smtpServer)
             {
                 Port = _smtpPort,
                 Credentials = new NetworkCredential(_smtpAddress, _smtpPassword),
                 EnableSsl = true,
             };
+
+            return smtpClient;
         }
     }
 }

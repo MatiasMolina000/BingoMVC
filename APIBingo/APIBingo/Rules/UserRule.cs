@@ -28,7 +28,9 @@ namespace APIBingo.Rules
         {
             ResultResponse<UserRequest> response = new() { Data = oModel };
 
-            var exist = await new UserData(_connectionFactory).CheckByUserOrEMail(oModel);
+            var exist = await new UserData(_connectionFactory)
+                .CheckByUserOrEMail(oModel);
+
             if (exist)
             {
                 response.Message = "The user or email already exist.";
@@ -45,11 +47,14 @@ namespace APIBingo.Rules
                     Password = oModel.Password,
                     PassTemp = rndNum.ToString(),
                 };
+
                 response.Message = await new UserData(_connectionFactory).New(oUser);
+                
                 if (response.Message == null)
                 {
                     response.Success = true;
-                    new EMailNotificationService(notificationEMail).ValidationMail(oUser.Email, oUser.PassTemp);
+                    new EMailNotificationService(notificationEMail)
+                        .ValidationMail(oUser.Email, oUser.PassTemp);
                 }
             }
 
@@ -59,14 +64,18 @@ namespace APIBingo.Rules
         public async Task<ResultResponse<bool>> EMailValidation(string? nameId, string code) 
         {
             ResultResponse<bool> response = new();
-            UserModel? oUser = await new UserData(_connectionFactory).GetById(nameId ?? "");
+            UserModel? oUser = await new UserData(_connectionFactory)
+                .GetById(nameId ?? "");
+
             if (oUser == null || oUser.PassTemp != code)
             {
                 response.Message = "Unauthorized.";
             }
             else 
             {
-                response.Message = await new UserData(_connectionFactory).EMailValidator(oUser);
+                response.Message = await new UserData(_connectionFactory)
+                    .EMailValidator(oUser);
+
                 if (response.Message == null)
                 {
                     response.Success = true;
@@ -80,8 +89,12 @@ namespace APIBingo.Rules
         {
             ResultResponse<UserRequest> response = new() { Data = oModel };
 
-            UserModel? oUser = await new UserData(_connectionFactory).GetById(oAuth.Id.ToString());
-            if (oUser == null || (oUser.User != oAuth.User || oUser.Email != oAuth.Email || oUser.Password != oAuth.Password))
+            UserModel? oUser = await new UserData(_connectionFactory)
+                .GetById(oAuth.Id.ToString());
+            if (oUser == null 
+                || (oUser.User != oAuth.User 
+                || oUser.Email != oAuth.Email 
+                || oUser.Password != oAuth.Password))
             {
                 response.Message = "Unauthorized.";
             }
@@ -89,24 +102,30 @@ namespace APIBingo.Rules
             {
                 oAuth.User = oModel.User;
                 oAuth.Email = oModel.Email;
-                var exist = await new UserData(_connectionFactory).CheckUpdatesByUserOrEMail(oAuth);
+                var exist = await new UserData(_connectionFactory)
+                    .CheckUpdatesByUserOrEMail(oAuth);
+
                 if (exist)
                 {
                     response.Message = "The user or email already exist.";
                 }
                 else 
                 {
-                    if (oUser.User != oModel.User || oUser.Email != oModel.Email || oUser.Password != oModel.Password) 
+                    if (oUser.User != oModel.User 
+                        || oUser.Email != oModel.Email 
+                        || oUser.Password != oModel.Password) 
                     {
-                        if (oModel.Email == null || !new EmailAddressAttribute().IsValid(oModel.Email))
+                        if (oModel.Email == null 
+                            || !new EmailAddressAttribute().IsValid(oModel.Email))
                         {
                             response.Message = "The email format is not valid.";
                         }
                         else 
                         {
-                            bool changesEMail = false;
+                            var changesEMail = false;
                             oUser.User = oModel.User;
                             oUser.Password = oModel.Password;
+                            
                             if (oUser.Email != oModel.Email)
                             {
                                 oUser.Email = oModel.Email;
@@ -125,12 +144,18 @@ namespace APIBingo.Rules
                                     Email = oUser.Email,
                                     Password = oUser.Password
                                 };
-                                ResultResponse<AuthToResponse> auth = await new AuthRules(_iConfiguration, _connectionFactory).Authentication(oAuthReq);
+                                ResultResponse<AuthToResponse> auth = await new AuthRules(_iConfiguration, _connectionFactory)
+                                    .Authentication(oAuthReq);
+
 
                                 response.Message = auth.Data?.Token;
                                 response.Success = true;
+
                                 if (changesEMail)
-                                    new EMailNotificationService(notificationEMail).ValidationMail(oUser.Email, oUser.PassTemp);
+                                { 
+                                    new EMailNotificationService(notificationEMail)
+                                        .ValidationMail(oUser.Email, oUser.PassTemp);
+                                }
                             }
                         }
                     }

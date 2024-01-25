@@ -14,9 +14,12 @@ namespace APIBingo.Datas
 
         public async Task<List<BingoCardNumberModel>> GetListByBingoCardId(BingoCardModel oModel)
         {
-            var query = "SELECT * FROM BingoCardNumbers WITH(NOLOCK) WHERE BingoCardId = @Id;";
+            var query = "SELECT * FROM BingoCardNumbers WITH(NOLOCK) " +
+                "WHERE BingoCardId = @Id;";
 
-            IEnumerable<BingoCardNumberModel> data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetListObjectAsync<BingoCardNumberModel>(query, oModel);
+            IEnumerable<BingoCardNumberModel> data = await new DBFactoryConnectionService(_connectionFactory)
+                .ExecuteGetListObjectAsync<BingoCardNumberModel>(query, oModel);
+            
             return data.ToList();
         }
     }

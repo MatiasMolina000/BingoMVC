@@ -26,6 +26,7 @@
             Status = 0;
             
             OBingoCages = new List<BingoCageModel>();
+            OBingoCards = new List<BingoCardModel>();
 
             CreateBingoCards();
         }
@@ -43,8 +44,11 @@
                 while (true)
                 {
                     oBingoCage.CreateNewBall(this);
+
                     if (!OBingoCages.Any(item => item.Number == oBingoCage.Number))
+                    { 
                         break;
+                    }
                 }
             }
             OBingoCages?.Add(oBingoCage);
@@ -53,16 +57,20 @@
         private void CreateBingoCards() 
         {
             OBingoCards = new List<BingoCardModel>();
+
             for (int i = 1; i <= _numbersOfBingoCards; i++)
             {
                 BingoCardModel bingoCard = new(i);
+
                 IEnumerable<BingoCardModel> idemQuery =
                     from bCards in OBingoCards
                     where bCards.Numbers == bingoCard.Numbers
                     select bCards;
 
                 if (idemQuery.Any())
+                { 
                     bingoCard.RedefineNumbers();
+                }
 
                 OBingoCards.Add(bingoCard);
             };
