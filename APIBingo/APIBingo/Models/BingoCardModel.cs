@@ -73,7 +73,9 @@
             for (var c = 0; c < _maxColumns; c++)
             {
                 if (c == _maxColumns - 1)
+                { 
                     maxValue += 1;
+                }
 
                 range[0, c] = minValue;
                 range[1, c] = maxValue;
@@ -102,7 +104,9 @@
                     {
                         numberLap = random.Next(0, 2);
                         if (numberLap == 1)
+                        { 
                             currentCell = previousCell;
+                        }
                     }
 
                     if (Array.IndexOf(columsWithTwoEmptyCells, currentCell) == -1)
@@ -119,7 +123,9 @@
             for (int r = 0; r < _maxColumns; r++)
             {
                 if (blankCellsByColumns[r] != 2)
+                { 
                     blankCellsByColumns[r] = 1;
+                }
             }
 
             return blankCellsByColumns;
@@ -146,7 +152,9 @@
                                 card[r, c0] = 1;
                                 row0 += 1;
                                 if (row0 == 5)
+                                { 
                                     break;
+                                }
                             }
                         }
                     } while (row0 != 5);
@@ -229,6 +237,7 @@
                             Random randomNumber = new();
                             currentNumber = randomNumber.Next(range[0, c], range[1, c]);
                         } while (currentNumber == previousNumber);
+                        
                         card[r, c] = currentNumber;
                         previousNumber = currentNumber;
 
@@ -264,8 +273,10 @@
             {
                 for (int r = 0; r < _maxRows; r++)
                 {
-                    if (card[r, c] != 0) 
+                    if (card[r, c] != 0)
+                    { 
                         numbers += card[r, c].ToString() + ',';
+                    }
                 }
             }
             numbers = numbers[..^1];
@@ -281,14 +292,18 @@
                 {
                     if (r == 0 && c == 0)
                     {
-                        if (card[r, c] != 0) 
+                        if (card[r, c] != 0)
+                        { 
                             numbers = card[r, c].ToString();
+                        }
                     }
                     else
                     {
                         numbers += ",";
                         if (card[r, c] > 0)
+                        { 
                             numbers += card[r, c].ToString();
+                        }
                     }
                 }
             }

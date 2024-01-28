@@ -15,8 +15,12 @@ namespace APIBingo.Datas
 
         public async Task<UserModel?> Authentication(AuthRequest oModel)
         {
-            string query = "SELECT * FROM Users WITH(NOLOCK) WHERE Email = @Email AND Password = @Password";
-            UserModel? data = await new DBFactoryConnectionService(_connectionFactory).ExecuteGetSingleObjectAsync<UserModel?>(query, oModel);
+            string query = "SELECT * FROM Users WITH(NOLOCK) " +
+                "WHERE Email = @Email AND Password = @Password";
+
+            UserModel? data = await new DBFactoryConnectionService(_connectionFactory)
+                .ExecuteGetSingleObjectAsync<UserModel?>(query, oModel);
+            
             return data;
         }
     }

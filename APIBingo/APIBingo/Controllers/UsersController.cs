@@ -29,7 +29,9 @@ namespace APIBingo.Controllers
         [HttpPost("New")]
         public async Task<ResultResponse<UserRequest>> New([FromBody] UserRequest oModel) 
         {
-            ResultResponse<UserRequest> rule = await new UserRule(_connectionFactory).New(oModel, _notificationEMail);
+            ResultResponse<UserRequest> rule = await new UserRule(_connectionFactory)
+                .New(oModel, _notificationEMail);
+
             return rule;
         }
         
@@ -39,7 +41,9 @@ namespace APIBingo.Controllers
             GetAuthenticationService getAuth = new(HttpContext);
             var nameIdClaim = getAuth.GetId();
 
-            ResultResponse<bool> rule = await new UserRule(_connectionFactory).EMailValidation(nameIdClaim, validationCode);
+            ResultResponse<bool> rule = await new UserRule(_connectionFactory)
+                .EMailValidation(nameIdClaim, validationCode);
+
             return rule;
         }
 
@@ -55,7 +59,9 @@ namespace APIBingo.Controllers
                 Password = getAuth.GetPassword() ?? ""
             };
 
-            ResultResponse<UserRequest> rule = await new UserRule(_iConfiguration, _connectionFactory).Update(oModel, oAuth, _notificationEMail);
+            ResultResponse<UserRequest> rule = await new UserRule(_iConfiguration, _connectionFactory)
+                .Update(oModel, oAuth, _notificationEMail);
+
             return rule;
         }
     }

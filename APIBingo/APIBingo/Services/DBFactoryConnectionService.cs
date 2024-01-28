@@ -20,11 +20,13 @@ namespace APIBingo.Services
             {
                 T? data = await cnn.QueryFirstOrDefaultAsync<T>(query, parameters);
                 cnn.Close();
+                
                 return data;
             }
             catch (Exception)
             {
                 cnn.Close();
+                
                 return default;
             }
         }
@@ -33,8 +35,10 @@ namespace APIBingo.Services
         public async Task<IEnumerable<T>> ExecuteGetListObjectAsync<T>(string query, object? parameters)
         {
             using IDbConnection cnn = _connectionFactory.CreateConnection();
+            
             IEnumerable<T> data = await cnn.QueryAsync<T>(query, parameters);
             cnn.Close();
+            
             return data;
         }
 
@@ -64,6 +68,7 @@ namespace APIBingo.Services
             }
             return response;
         }
+        //Execute and return the last Id generated
         public async Task<string?> ExecuteInsertSingleAndGetIdAsync(string query, object? parameters)
         {
             string? response = null;

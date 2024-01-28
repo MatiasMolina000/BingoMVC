@@ -27,7 +27,8 @@ namespace APIBingo.Rules
         {
             ResultResponse<AuthToResponse> response = new() { Message = "Access denied." };
 
-            UserModel? auth = await new AuthData(_connectionFactory).Authentication(oAuthReq);
+            UserModel? auth = await new AuthData(_connectionFactory)
+                .Authentication(oAuthReq);
 
             if (auth != null) 
             { 
@@ -54,7 +55,9 @@ namespace APIBingo.Rules
             string issuer = iConfiguration["Jwt:Issuer"];
             string audience = iConfiguration["Jwt:Audience"];
             byte[] key = Encoding.ASCII.GetBytes(iConfiguration["Jwt:Key"]);
-            SigningCredentials signingCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
+            SigningCredentials signingCredentials = new(
+                new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
+                );
 
             SecurityTokenDescriptor tokenDescriptor = new()
             {

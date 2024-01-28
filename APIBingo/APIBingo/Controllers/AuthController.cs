@@ -24,7 +24,9 @@ namespace APIBingo.Controllers
         [HttpPost("Authentication")]
         public async Task<ResultResponse<AuthToResponse>> Authentication([FromBody] AuthRequest oModel) 
         {
-            ResultResponse<AuthToResponse> auth = await new AuthRules(_iConfiguration, _connectionFactory).Authentication(oModel);
+            ResultResponse<AuthToResponse> auth = await new AuthRules(_iConfiguration, _connectionFactory)
+                .Authentication(oModel);
+
             return auth;
         }
     }
