@@ -27,7 +27,7 @@ In this section, the metadata of the proposed model is documented, classified by
 
 <article>
 
-- Data Dictionary from **BingoCage** entity
+- Data Dictionary from **BingoCages** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
@@ -41,7 +41,7 @@ In this section, the metadata of the proposed model is documented, classified by
 <br>
 <article>
 
-- Data Dictionary from **BingoCard** entity
+- Data Dictionary from **BingoCards** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
@@ -51,6 +51,19 @@ In this section, the metadata of the proposed model is documented, classified by
 | Numbers | varchar | 100 bytes | No | N/A | N/A | String with the numbers of the bingo card |
 | OrderedN | varchar | 100 bytes | No | N/A | N/A | String with the numbers and the blanks of the bingo card |
 | Completed | bit | 1 bytes | No | N/A | N/A | CDT of the a bingo card |
+
+</article>
+<br>
+<article>
+
+- Data Dictionary from **BingoCardNumbers** entity
+
+| Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
+|:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
+| Id | bigint | 8 bytes | No | Si | AI | PK of the BingoCage entity |
+| BingoCardId | bigint | 8 bytes | No | Si | AI | FK of the BingoCards entity |
+| Number | tinyint | 1 bytes | No | N/A | N/A | Number in the bingo card |
+| Called | bit | 1 bytes | No | N/A | N/A | Status in the game |
 
 </article>
 <br>
@@ -67,7 +80,7 @@ In this section, the metadata of the proposed model is documented, classified by
 <br>
 <article>
 
-- Data Dictionary from **Role** entity
+- Data Dictionary from **Roles** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
@@ -89,7 +102,7 @@ In this section, the metadata of the proposed model is documented, classified by
 <br>
 <article>
 
-- Data Dictionary from **User** entity
+- Data Dictionary from **Users** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
@@ -105,7 +118,7 @@ In this section, the metadata of the proposed model is documented, classified by
 <br>
 <article>
 
-- Data Dictionary from **UserRole** entity
+- Data Dictionary from **UserRoles** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
@@ -117,7 +130,7 @@ In this section, the metadata of the proposed model is documented, classified by
 <br>
 <article>
 
-- Data Dictionary from **Game** entity
+- Data Dictionary from **Games** entity
 
 | Name | Type of field | Length | Allows Null | Deffautlt value | Constrain | Description | 
 |:----:|:-------------:|:------:|:-----------:|:---------------:|:---------:|:------------|
