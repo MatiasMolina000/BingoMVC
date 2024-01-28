@@ -23,6 +23,6 @@ This document aims to define the different use cases resulting from the analysis
 <footer align="center">
     <hr>
 
-### ◀️ [Return](../../README.md)
+### ◀️ [Return](../README.md)
 
 </footer>
