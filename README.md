@@ -82,7 +82,7 @@ To explain and understand the process and translate it inot the user's experienc
 ### 👤 Use Cases
 
 <section align=center>
-    <img src="./docs/assets/diagrams/useCases.jpg">
+    <img src="./docs/assets/diagrams/UseCases.jpg">
 </section>
 
 #### 🔎 [View more. General process definition](./docs/redesign/General_process_definition.md)
