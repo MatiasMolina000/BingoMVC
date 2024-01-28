@@ -74,7 +74,9 @@ The following link will redirect you to the repository's list of issues:
 To explain and understand the process and translate it inot the user's experience, it is represented through the following User Flow Diagram.
 
 <section align=center>
+ <div align=center>
     <img src="./docs/assets/diagrams/UserFlow.jpg">
+ </div>
 </section>
 
 <br>
@@ -82,7 +84,9 @@ To explain and understand the process and translate it inot the user's experienc
 ### 👤 Use Cases
 
 <section align=center>
+  <div align=center>
     <img src="./docs/assets/diagrams/UseCases.jpg">
+  </div>
 </section>
 
 #### 🔎 [View more. General process definition](./docs/General_process_definition.md)
@@ -92,7 +96,9 @@ To explain and understand the process and translate it inot the user's experienc
 ### 🔖 Entity-Relationship diagram
 
 <section align=center>
+ <div align=center>
     <img src="./docs/assets/diagrams/New_DER.jpg">
+ </div>
 </section>
 
 <br>
@@ -121,13 +127,17 @@ The purpose of the following document is to catalog and present the various inte
 #### General System Structure
 
 <section align=center>
+  <div align=center>
     <img src="./docs/assets/diagrams/Context.jpg" alt="Context diagram">
+  </div>
 </section>
 
 #### General Solition Structure
 
 <section align=center>
+  <div align=center>
     <img src="./docs/assets/diagrams/Solution.jpg" alt="Context diagram">
+  </div>
 </section>
 
 ### 👾 Stack
