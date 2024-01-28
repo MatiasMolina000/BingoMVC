@@ -85,7 +85,7 @@ To explain and understand the process and translate it inot the user's experienc
     <img src="./docs/assets/diagrams/UseCases.jpg">
 </section>
 
-#### 🔎 [View more. General process definition](./docs/redesign/General_process_definition.md)
+#### 🔎 [View more. General process definition](./docs/General_process_definition.md)
 
 <br>
 
