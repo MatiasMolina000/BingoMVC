@@ -1,0 +1,14 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+        <label for="">Email</label>
+        <input type="text" formControlName="email">
+    </div>
+    <div>
+        <label for="">Password</label>
+        <input type="password" formControlName="password">
+    </div>
+    <div *ngIf="credentialError">
+        <small>Invalid credentials</small>
+    </div>
+    <input type="submit" value="Sing In">
+</form>
