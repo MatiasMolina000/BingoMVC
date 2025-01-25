@@ -1,14 +1,22 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div>
-        <label for="">Email</label>
-        <input type="text" formControlName="email">
+        <label for="">Email
+            <input type="text" formControlName="email">
+            <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
+                <small>{{ buildErrorMessageForm('email') }}</small>
+            </div>
+        </label>
     </div>
     <div>
-        <label for="">Password</label>
-        <input type="password" formControlName="password">
+        <label for="">Password
+            <input type="password" formControlName="password">
+            <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid">
+                <small>{{ buildErrorMessageForm('password') }}</small>
+            </div>
+        </label>
     </div>
     <div *ngIf="credentialError">
-        <small>Invalid credentials</small>
+        <small>{{ errorMessage }}</small>
     </div>
     <input type="submit" value="Sing In">
 </form>
