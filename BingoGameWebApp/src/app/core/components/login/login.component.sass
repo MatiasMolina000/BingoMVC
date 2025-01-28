@@ -1,0 +1,91 @@
+.center-container
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 100vh  // 100% de la altura de la ventana
+    background-color: #f0f0f0  // Fondo de la página (opcional)
+
+.card
+    width: 80%         // Ajusta el ancho del contenido si es necesario
+    height: 25%        // 25% de la altura de la pantalla
+    max-width: 700px   // Ajusta el máximo ancho si lo deseas
+    padding: 20px
+    //box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    //gap: 15px
+
+.card-header
+    width: 100%
+    font-size: 48px
+    background-color: #ECE6C2
+    border: 7px solid #342E23
+    border-radius: 20px 20px 0px 0px
+
+    display: flex
+    justify-content: center
+    align-items: center
+
+.card-body
+    width: 100% 
+    height: 543px
+    padding-top: 56px
+    padding-bottom: 20px
+    font-size: 32px
+    background-color: #FFF
+    border-left: 7px solid #342E23
+    border-right: 7px solid #342E23
+    border-bottom: 7px solid #342E23
+    border-radius: 0px 0px 20px 20px
+
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+form
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+
+input
+    margin-top: 10px
+    font-size: 40px
+    max-width: 450px
+    padding: 8px 24px
+    background-color: #FFF
+    border-bottom: 4px solid #342E23
+
+input[type="submit"]
+    width: 100%
+    max-width: 375px
+    padding: 10px 20px
+    margin-top: 40px
+    margin-bottom: 10px
+    background-color: #ECE6C2
+    color: #342E23
+    border-bottom: 5px solid #342E23
+    border-radius: 10px
+    box-shadow: 0px 6px 4px rgba(0, 0, 0, 0.2), inset 0px -6px 6px 1px rgba(0, 0, 0, 0.2)
+    cursor: pointer
+
+input[type="submit"]:active
+    margin-top: 14px
+    background-color: #ECE6C2
+    border-bottom: none
+    box-shadow: inset 0px -6px 6px 1px rgba(0, 0, 0, 0.2)
+
+.input-error
+    font-size: 24px
+    color: #FC4343
+    display: flex
+    flex-direction: column
+    align-items: center
+
+a
+    color: #2400FF 
+    opacity: .54

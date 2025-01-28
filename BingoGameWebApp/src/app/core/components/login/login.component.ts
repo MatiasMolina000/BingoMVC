@@ -58,16 +58,16 @@ export class LoginComponent {
     const control = this.form.controls[controlName];
     if (control.touched && control.invalid) {
       if (control.hasError('required')) {
-        return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} is required.`;
+        return `* ${controlName.charAt(0).toUpperCase() + controlName.slice(1)} is required.`;
       }
       if (control.hasError('minlength')) {
-        return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} must be at least ${this.minLengthInput} character long.`;
+        return `* ${controlName.charAt(0).toUpperCase() + controlName.slice(1)} must be at least ${this.minLengthInput} character long.`;
       }
       if (control.hasError('maxlength')) {
-        return `${controlName.charAt(0).toUpperCase() + controlName.slice(1)} cannot be longer than ${this.maxLengthInput} characters.`;
+        return `* ${controlName.charAt(0).toUpperCase() + controlName.slice(1)} cannot be longer than ${this.maxLengthInput} characters.`;
       }
       if (control.hasError('email')) {
-        return `Please enter a valid email address.`;
+        return `* Please enter a valid email address.`;
       }
     }
     return '';

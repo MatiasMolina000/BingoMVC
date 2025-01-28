@@ -1,22 +1,37 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
-        <label for="">Email
-            <input type="text" formControlName="email">
-            <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid">
-                <small>{{ buildErrorMessageForm('email') }}</small>
-            </div>
-        </label>
+<div class="center-container">
+    <div class="card">
+        <div class="card-header">
+            <h1>BINGO</h1>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+                <div>
+                    <label for="">
+                        <input type="text" formControlName="email" placeholder="Email" autocomplete="off">
+                        <div *ngIf="form.controls['email'].touched && form.controls['email'].invalid" class="input-error">
+                            <small>{{ buildErrorMessageForm('email') }}</small>
+                        </div>
+                    </label>
+                </div>
+                <div>
+                    <label for="">
+                        <input type="password" formControlName="password" placeholder="Password" autocomplete="off">
+                        <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid" class="input-error">
+                            <small>{{ buildErrorMessageForm('password') }}</small>
+                        </div>
+                    </label>
+                </div>
+                <div *ngIf="credentialError">
+                    <small>{{ errorMessage }}</small>
+                </div>
+                <input type="submit" value="Sing In">
+                <div>
+                    <a href="#">Reset Password</a>
+                </div>
+                <div>Non account?
+                    <a href="#">Create one</a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div>
-        <label for="">Password
-            <input type="password" formControlName="password">
-            <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid">
-                <small>{{ buildErrorMessageForm('password') }}</small>
-            </div>
-        </label>
-    </div>
-    <div *ngIf="credentialError">
-        <small>{{ errorMessage }}</small>
-    </div>
-    <input type="submit" value="Sing In">
-</form>
+</div>
