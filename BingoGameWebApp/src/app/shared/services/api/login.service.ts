@@ -4,7 +4,7 @@ import { catchError, Observable, tap, map, throwError } from 'rxjs';
 
 import { ILogin } from '../../models/login.interface';
 import { IResponse } from '../../models/response.interface';
-import { AuthenticationService } from './authentication.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class LoginService {
 
   private url: string = 'http://localhost:9091/api/';
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private authenticationService: AuthService) { }
 
   signIn (request: ILogin): Observable<string> {
     return this.httpClient.post<any>(this.url.concat('Auth/Authentication'), request)
